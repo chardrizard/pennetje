@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Pennetje</title>
+  <style>
+    /* ═══════════════════════════════════════════
+       PENNETJE — Design tokens
+       World: stroopwafel caramel, kraft paper,
+              sage notebook cover, pencil wood,
+              wax-seal terracotta
+       Font: native system stack — zero load time
+    ═══════════════════════════════════════════ */
+    :root {
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+              'Helvetica Neue', Arial, sans-serif;
+
+      /* Paper surfaces — barely different, always warm */
+      --paper-0: #faf7f2;   /* body bg */
+      --paper-1: #f3ede4;   /* card surface */
+      --paper-2: #ece4d8;   /* pressed / active */
+      --paper-3: #e0d6c8;   /* stronger divider */
+
+      /* Borders — light, never first thing you see */
+      --border:  #d4c9b8;
+      --border-light: #e4dbd0;
+
+      /* Text hierarchy */
+      --t1: #1e1a15;   /* headings */
+      --t2: #3a3228;   /* body */
+      --t3: #6b5e50;   /* secondary */
+      --t4: #a0917e;   /* placeholder, labels */
+
+      /* Brand — terracotta from a Dutch wax seal */
+      --brand:       #b85c38;
+      --brand-dark:  #9a4828;
+      --brand-light: #fbf0eb;
+      --brand-mid:   #edc5b3;
+
+      /* Semantic — kept warm, never cold */
+      --err:         #c03030;
+      --err-light:   #fef2f2;
+      --err-border:  #f0bfbf;
+
+      --ok:          #3a7a50;
+      --ok-light:    #f0f8f2;
+      --ok-border:   #b8dcca;
+
+      --note:        #8a6220;
+      --note-light:  #fdf6e8;
+      --note-border: #dfc88a;
+
+      /* Category badge colours — muted, warm */
+      --cat-vorm-bg:    #fdf0e0; --cat-vorm-fg:    #7a4a0e; --cat-vorm-br: #e8c88a;
+      --cat-prep-bg:    #f5eef8; --cat-prep-fg:    #5a2d78; --cat-prep-br: #d4aee8;
+      --cat-zin-bg:     #eef5f0; --cat-zin-fg:     #1e5a38; --cat-zin-br:  #aed4c0;
+
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 16px;
+      --r-xl: 20px;
+      --r-full: 100px;
+
+      /* Depth strategy: subtle shadows only */
+      --s-sm: 0 1px 3px rgba(30,26,21,0.07);
+      --s-md: 0 3px 10px rgba(30,26,21,0.09), 0 1px 3px rgba(30,26,21,0.05);
+      --s-lg: 0 8px 24px rgba(30,26,21,0.11), 0 2px 6px rgba(30,26,21,0.06);
+
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after {
+      box-sizing: border-box; margin: 0; padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font);
+      background: var(--paper-0);
+      color: var(--t2);
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    button { font-family: var(--font); cursor: pointer; border: none; background: none; }
+    textarea, input { font-family: var(--font); }
+    .hidden { display: none !important; }
+
+    /* ── Screen shell ── */
+    .screen { display: none; flex-direction: column; min-height: 100dvh; }
+    .screen.active { display: flex; }
+
+    /* ── Sticky header ── */
+    .s-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      position: sticky; top: 0; z-index: 10;
+      background: var(--paper-0);
+      border-bottom: 1px solid var(--border-light);
+    }
+    .hd-center { flex: 1; display: flex; justify-content: center; }
+    .hd-side { width: 36px; display: flex; justify-content: flex-end; }
+
+    .wordmark { font-size: 1rem; font-weight: 700; color: var(--t1); letter-spacing: -0.02em; }
+    .wordmark em { color: var(--brand); font-style: italic; font-weight: 600; }
+
+    /* ── Sticky footer ── */
+    .s-footer {
+      padding: 12px 16px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      background: var(--paper-0);
+      border-top: 1px solid var(--border-light);
+      position: sticky; bottom: 0;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: block; width: 100%; padding: 14px 20px;
+      background: var(--brand); color: #fff;
+      font-size: 0.9375rem; font-weight: 600;
+      border-radius: var(--r-md); text-align: center; min-height: 50px;
+      letter-spacing: 0.01em;
+      transition: background 140ms, transform 120ms;
+    }
+    .btn-primary:active { transform: scale(0.982); background: var(--brand-dark); }
+    .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-primary:disabled:active { transform: none; }
+
+    .btn-ghost {
+      display: block; width: 100%; padding: 13px 20px;
+      background: transparent; color: var(--t3);
+      font-size: 0.875rem; font-weight: 500;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-md); text-align: center; min-height: 48px;
+      transition: border-color 140ms, color 140ms;
+    }
+    .btn-ghost:active { border-color: var(--t4); color: var(--t2); }
+
+    .btn-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: var(--r-md);
+      font-size: 1rem; color: var(--t3);
+      transition: background 130ms;
+    }
+    .btn-icon:active { background: var(--paper-1); }
+
+    /* ── Streak pill ── */
+    .streak {
+      display: flex; align-items: center; gap: 4px;
+      background: var(--note-light); border: 1px solid var(--note-border);
+      border-radius: var(--r-full); padding: 3px 10px 3px 8px;
+    }
+    .streak-n { font-size: 0.875rem; font-weight: 700; color: var(--note); }
+
+    /* ── Chips ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { display: inline-flex; align-items: center; padding: 4px 11px; border-radius: var(--r-full); font-size: 0.8125rem; font-weight: 500; }
+    .chip-prep  { background: var(--brand-light); border: 1px solid var(--brand-mid); color: var(--brand-dark); font-style: italic; }
+    .chip-word  { background: var(--t1); color: var(--paper-0); }
+    .chip-mini  { background: var(--paper-1); border: 1px solid var(--border); color: var(--t3); font-style: italic; font-size: 0.75rem; padding: 3px 9px; }
+
+    /* ═══════════════════════════════════════════
+       HOME SCREEN
+    ═══════════════════════════════════════════ */
+    .home-body { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+
+    .home-eyebrow { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t4); }
+    .home-heading { font-size: 1.1875rem; font-weight: 700; color: var(--t1); letter-spacing: -0.02em; line-height: 1.3; margin-top: 3px; }
+    .home-heading em { color: var(--brand); font-style: normal; }
+
+    /* Prompt card */
+    .prompt-card {
+      background: var(--paper-1); border: 1px solid var(--border);
+      border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--s-md);
+      position: relative;
+    }
+    /* The signature margin line — terracotta, appears in canvas too */
+    .prompt-card::after {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--brand);
+    }
+    .card-top { height: 3px; background: var(--brand); }
+    .card-inner { padding: 16px 16px 18px 20px; }
+
+    .card-format {
+      font-size: 0.625rem; font-weight: 700; letter-spacing: 0.11em;
+      text-transform: uppercase; color: var(--brand); margin-bottom: 6px;
+    }
+    .card-q {
+      font-size: 1rem; line-height: 1.65; font-weight: 500;
+      color: var(--t1); margin-bottom: 18px;
+    }
+    .cg { margin-bottom: 10px; }
+    .cg:last-child { margin-bottom: 0; }
+    .cg-label {
+      font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--t4); display: block; margin-bottom: 5px;
+    }
+
+    .tip-bar {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: var(--note-light); border: 1px solid var(--note-border);
+      border-radius: var(--r-md); padding: 11px 13px;
+      font-size: 0.875rem; line-height: 1.5; color: var(--note);
+    }
+    .tip-bar strong { font-weight: 700; }
+
+    .provider-hint { font-size: 0.75rem; color: var(--t4); text-align: center; }
+
+    /* ═══════════════════════════════════════════
+       CANVAS SCREEN
+    ═══════════════════════════════════════════ */
+    .canvas-hdr { flex-wrap: wrap; align-items: flex-start; gap: 8px; padding-bottom: 10px; }
+    .canvas-chips-wrap { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
+
+    .canvas-strip {
+      padding: 8px 16px; background: var(--paper-1);
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.8125rem; line-height: 1.55; color: var(--t3); font-style: italic;
+    }
+
+    .canvas-main { flex: 1; display: flex; overflow: hidden; }
+
+    /* Ruled paper — the signature element */
+    .paper-wrap {
+      flex: 1; position: relative; display: flex;
+      background: var(--paper-1);
+      background-image: repeating-linear-gradient(
+        transparent, transparent 27px,
+        rgba(180,165,148,0.3) 27px,
+        rgba(180,165,148,0.3) 28px
+      );
+      background-position: 0 36px;
+    }
+    .margin-line {
+      position: absolute; left: 40px; top: 0; bottom: 0;
+      width: 1px; background: rgba(184,92,56,0.18);
+      pointer-events: none; z-index: 1;
+    }
+    .writing-area {
+      flex: 1; padding: 16px 16px 20px 50px;
+      font-size: 1rem; line-height: 1.75rem;
+      color: var(--t1); background: transparent;
+      border: none; outline: none; resize: none; width: 100%;
+      caret-color: var(--brand);
+    }
+    .writing-area::placeholder { color: var(--t4); font-style: italic; }
+
+    .canvas-footer { display: flex; align-items: center; gap: 12px; }
+    .sent-target { color: var(--t4); }
+    .canvas-footer .btn-primary { flex: 1; font-size: 0.875rem; min-height: 46px; }
+
+    /* ═══════════════════════════════════════════
+       FEEDBACK SCREEN
+       Most important area — designed for learning,
+       not just display.
+    ═══════════════════════════════════════════ */
+    .fb-loading {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; flex: 1; gap: 14px; padding: 60px 24px;
+    }
+    .spinner {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid var(--border);
+      border-top-color: var(--brand);
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-lbl { font-size: 0.9rem; color: var(--t3); font-style: italic; }
+
+    .fb-content { display: flex; flex-direction: column; flex: 1; }
+    .fb-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── 1. Score strip — compact, not dominating ── */
+    .score-strip {
+      display: flex; gap: 8px;
+      animation: up 320ms var(--ease) both;
+    }
+    .score-chip {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+      background: var(--paper-1); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 10px 8px;
+    }
+    .score-chip.good { border-color: var(--ok-border); background: var(--ok-light); }
+    .score-chip.miss { border-color: var(--err-border); background: var(--err-light); }
+    .sc-icon { font-size: 0.875rem; line-height: 1; }
+    .sc-lbl  { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--t4); }
+    .sc-val  { font-size: 0.9375rem; font-weight: 700; color: var(--t1); }
+
+    /* ── 2. Annotated text — with tap hint ── */
+    .fb-block {
+      background: var(--paper-1); border: 1px solid var(--border);
+      border-radius: var(--r-lg); overflow: hidden;
+    }
+    .fb-block-head {
+      padding: 9px 14px; border-bottom: 1px solid var(--border-light);
+      font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--t3); background: var(--paper-2);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tap-hint-lbl {
+      font-size: 0.6875rem; font-weight: 400; font-style: italic;
+      color: var(--t4); letter-spacing: 0;
+      text-transform: none;
+    }
+    .anno-text {
+      padding: 14px 16px; font-size: 0.9375rem; line-height: 1.9; color: var(--t2);
+    }
+    .a-err {
+      background: var(--err-light); border-bottom: 2px solid var(--err);
+      border-radius: 2px; cursor: pointer; padding: 1px 2px;
+      color: var(--err); font-style: italic;
+      transition: background 120ms;
+    }
+    .a-err:active { background: #f8d5d5; }
+    .a-ok {
+      background: var(--ok-light); border-bottom: 2px solid var(--ok);
+      border-radius: 2px; padding: 1px 2px; color: var(--ok);
+    }
+
+    /* ── 3. Corrections — the main learning area ──
+       For every mistake:
+         Category badge
+         Wrong form (struck through or red)
+         → Correct form (prominent)
+         Rule (plain language, one sentence)
+    ── */
+    .corrections-block {
+      background: var(--paper-1); border: 1px solid var(--border);
+      border-radius: var(--r-lg); overflow: hidden;
+      animation: up 320ms var(--ease) 80ms both;
+    }
+    .corrections-block.empty { display: none; }
+
+    .correction {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .correction:last-child { border-bottom: none; }
+
+    /* Top row: category + wrong form */
+    .corr-row-top { display: flex; align-items: flex-start; gap: 8px; }
+    .cat-badge {
+      flex-shrink: 0; margin-top: 2px;
+      padding: 2px 8px; border-radius: var(--r-full);
+      font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; border: 1px solid transparent;
+    }
+    .cat-vorm { background: var(--cat-vorm-bg); color: var(--cat-vorm-fg); border-color: var(--cat-vorm-br); }
+    .cat-prep { background: var(--cat-prep-bg); color: var(--cat-prep-fg); border-color: var(--cat-prep-br); }
+    .cat-zin  { background: var(--cat-zin-bg);  color: var(--cat-zin-fg);  border-color: var(--cat-zin-br); }
+    .cat-goed { background: var(--ok-light); color: var(--ok); border-color: var(--ok-border); }
+
+    .corr-wrong {
+      font-size: 0.9375rem; color: var(--err); font-style: italic;
+      font-weight: 500; flex: 1; line-height: 1.4;
+    }
+    .corr-wrong.is-ok { color: var(--ok); font-style: normal; }
+
+    /* The fix — most prominent element per correction */
+    .corr-fix {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--ok-light);
+      border: 1px solid var(--ok-border);
+      border-radius: var(--r-sm); padding: 9px 12px;
+    }
+    .fix-arrow { font-size: 0.875rem; color: var(--ok); flex-shrink: 0; font-weight: 700; }
+    .fix-val { font-size: 1rem; font-weight: 700; color: var(--ok); flex: 1; }
+
+    /* The rule — plain, readable */
+    .corr-rule {
+      font-size: 0.875rem; line-height: 1.6; color: var(--t3);
+      border-left: 2px solid var(--border); padding-left: 10px;
+    }
+
+    /* ── 4. Coach note ── */
+    .coach-wrap {
+      display: flex; gap: 10px; align-items: flex-start;
+      animation: up 320ms var(--ease) 160ms both;
+    }
+    .coach-av {
+      width: 32px; height: 32px; background: var(--brand);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.875rem; color: #fff; flex-shrink: 0; margin-top: 2px;
+    }
+    .coach-bubble {
+      background: var(--brand-light); border: 1px solid var(--brand-mid);
+      border-radius: 0 var(--r-lg) var(--r-lg) var(--r-lg);
+      padding: 12px 14px; font-size: 0.9375rem; line-height: 1.7;
+      color: var(--t2); flex: 1;
+    }
+
+    /* FB Error */
+    .fb-error {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 14px;
+      padding: 60px 24px; flex: 1; text-align: center;
+    }
+    .err-msg { color: var(--err); font-size: 0.9375rem; line-height: 1.6; }
+
+    @keyframes up {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════
+       BOTTOM SHEET (tap an annotated error)
+    ═══════════════════════════════════════════ */
+    .sheet-bg {
+      position: fixed; inset: 0; background: rgba(30,26,21,0.42);
+      z-index: 40; opacity: 0; transition: opacity 220ms var(--ease);
+    }
+    .sheet-bg.on { opacity: 1; }
+
+    .sheet {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--paper-0); border-radius: var(--r-xl) var(--r-xl) 0 0;
+      padding: 10px 16px max(28px, env(safe-area-inset-bottom));
+      z-index: 50; transform: translateY(100%);
+      transition: transform 340ms var(--ease);
+      box-shadow: var(--s-lg); max-height: 70dvh; overflow-y: auto;
+    }
+    .sheet.on { transform: translateY(0); }
+    .sheet-pip { width: 30px; height: 4px; background: var(--border); border-radius: var(--r-full); margin: 4px auto 16px; }
+
+    .sh-badge { display: inline-flex; padding: 2px 9px; border-radius: var(--r-full); font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 10px; border: 1px solid transparent; }
+    .sh-wrong { font-size: 1rem; font-weight: 600; color: var(--err); font-style: italic; margin-bottom: 8px; }
+    .sh-rule  { font-size: 0.9375rem; line-height: 1.65; color: var(--t2); margin-bottom: 14px; }
+    .sh-fix {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--ok-light); border: 1px solid var(--ok-border);
+      border-radius: var(--r-md); padding: 11px 14px; margin-bottom: 16px;
+    }
+    .sh-fix-lbl { font-size: 0.8125rem; font-weight: 600; color: var(--ok); }
+    .sh-fix-val { font-size: 1.0625rem; font-weight: 700; color: var(--ok); }
+
+
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════ */
+    @media (min-width: 480px) {
+      body { background: var(--paper-2); }
+      .screen { max-width: 480px; margin: 0 auto; }
+      .sheet-bg, .sheet { max-width: 480px; left: 50%; right: auto; }
+      .sheet-bg { transform: translateX(-50%); }
+      .sheet { transform: translateX(-50%) translateY(100%); }
+      .sheet.on { transform: translateX(-50%) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HOME SCREEN
+══════════════════════════════════════════ -->
+<div id="screen-home" class="screen">
+  <header class="s-header">
+    <div class="streak">
+      <span>🔥</span>
+      <span class="streak-n" id="streak-count">0</span>
+    </div>
+    <div class="hd-center"><div class="wordmark">Pennet<em>je</em></div></div>
+    <div class="hd-side"></div>
+  </header>
+
+  <main class="home-body">
+    <div>
+      <p class="home-eyebrow" id="home-date"></p>
+      <h2 class="home-heading">Klaar voor je <em>dagelijkse</em> oefening?</h2>
+    </div>
+
+    <div class="prompt-card">
+      <div class="card-top"></div>
+      <div class="card-inner">
+        <p class="card-format" id="home-format">laden...</p>
+        <p class="card-q" id="home-prompt">—</p>
+        <div class="cg">
+          <span class="cg-label">Voorzetsels om te gebruiken</span>
+          <div class="chips" id="home-preps"></div>
+        </div>
+        <div class="cg">
+          <span class="cg-label">Doelwoorden — let op de/het + meervoud</span>
+          <div class="chips" id="home-words"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-bar">
+      <span>✏️</span>
+      <p>Schrijf <strong>5–8 zinnen</strong> zonder woordenboek. Commit aan elke keuze — zo leer je het snelst.</p>
+    </div>
+
+    <p class="provider-hint" id="provider-hint"></p>
+  </main>
+
+  <footer class="s-footer">
+    <button class="btn-primary" id="btn-start">Begin met schrijven →</button>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CANVAS SCREEN
+══════════════════════════════════════════ -->
+<div id="screen-canvas" class="screen">
+  <header class="s-header canvas-hdr">
+    <button class="btn-icon" id="btn-back-canvas">←</button>
+    <div class="canvas-chips-wrap" id="canvas-chips"></div>
+  </header>
+  <div class="canvas-strip" id="canvas-strip"></div>
+  <main class="canvas-main">
+    <div class="paper-wrap">
+      <div class="margin-line"></div>
+      <textarea
+        id="writing-area" class="writing-area"
+        placeholder="Begin hier te schrijven... (min. 10 tekens)"
+        autocomplete="off" autocorrect="off"
+        autocapitalize="sentences" spellcheck="false"
+      ></textarea>
+    </div>
+  </main>
+  <footer class="s-footer canvas-footer">
+    <button class="btn-primary" id="btn-submit" disabled>Verstuur →</button>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FEEDBACK SCREEN
+══════════════════════════════════════════ -->
+<div id="screen-feedback" class="screen">
+  <header class="s-header">
+    <button class="btn-icon" id="btn-back-fb">←</button>
+    <div class="hd-center" style="font-size:1rem;font-weight:700;color:var(--t1)">Feedback</div>
+    <div class="hd-side"></div>
+  </header>
+
+  <!-- Loading -->
+  <div id="fb-loading" class="fb-loading">
+    <div class="spinner"></div>
+    <p class="loading-lbl">Pennetje leest je tekst...</p>
+  </div>
+
+  <!-- Content -->
+  <div id="fb-content" class="fb-content hidden">
+    <div class="fb-body">
+
+      <!-- 1. Score strip -->
+      <div class="score-strip" id="score-strip">
+        <div class="score-chip" id="sc-prep">
+          <span class="sc-icon">—</span>
+          <span class="sc-lbl">Voorzetsels</span>
+          <span class="sc-val" id="sc-prep-v">—</span>
+        </div>
+        <div class="score-chip" id="sc-dehet">
+          <span class="sc-icon">—</span>
+          <span class="sc-lbl">De/het</span>
+          <span class="sc-val" id="sc-dehet-v">—</span>
+        </div>
+        <div class="score-chip" id="sc-words">
+          <span class="sc-icon">—</span>
+          <span class="sc-lbl">Doelwoorden</span>
+          <span class="sc-val" id="sc-words-v">—</span>
+        </div>
+      </div>
+
+      <!-- 2. Annotated text -->
+      <div class="fb-block" id="anno-block">
+        <div class="fb-block-head">
+          <span>📝 Jouw tekst</span>
+          <span class="tap-hint-lbl" id="tap-hint" style="display:none">tik op rood voor uitleg</span>
+        </div>
+        <div class="anno-text" id="anno-text"></div>
+      </div>
+
+      <!-- 3. Corrections list — one card per mistake -->
+      <div class="corrections-block empty" id="corrections-block">
+        <div class="fb-block-head"><span>🔍 Verbeterpunten</span></div>
+        <div id="corrections-list"></div>
+      </div>
+
+      <!-- 4. Coach note -->
+      <div class="coach-wrap">
+        <div class="coach-av">✍</div>
+        <div class="coach-bubble" id="coach-bubble"></div>
+      </div>
+
+    </div>
+    <footer class="s-footer">
+      <button class="btn-primary" id="btn-done">Klaar voor vandaag ✓</button>
+    </footer>
+  </div>
+
+  <div id="fb-error" class="fb-error hidden">
+    <p class="err-msg">Er ging iets mis. Probeer het opnieuw.</p>
+    <button class="btn-ghost" id="btn-retry" style="max-width:220px">Opnieuw proberen</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     BOTTOM SHEET (tapping inline annotation)
+══════════════════════════════════════════ -->
+<div id="sheet-bg" class="sheet-bg hidden"></div>
+<div id="bottom-sheet" class="sheet hidden">
+  <div class="sheet-pip"></div>
+  <div id="sh-badge" class="sh-badge"></div>
+  <p id="sh-wrong" class="sh-wrong"></p>
+  <p id="sh-rule"  class="sh-rule"></p>
+  <div class="sh-fix" id="sh-fix">
+    <div>
+      <div class="sh-fix-lbl">Correct:</div>
+      <div id="sh-fix-val" class="sh-fix-val"></div>
+    </div>
+  </div>
+  <button class="btn-primary" id="btn-begrepen">Begrepen ✓</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCRIPT
+══════════════════════════════════════════ -->
+<script>
+// ── CONFIG ────────────────────────────────────────────────
+const GEMINI_KEY   = 'AIzaSyAMqd7RwD4Q-n7iHCJyBRNDS9iT5LZqa80';
+const GEMINI_MODEL = 'gemini-3-flash-preview';
+
+// ── PROMPTS ──────────────────────────────────────────────
+const PROMPTS = [
+  { id:'d1', dag:'Maandag',   format:'Vertel een verhaal',
+    prompt_nl:'Beschrijf een moment deze week waarop je iets nieuws probeerde. Hoe voelde dat?',
+    constraints:{ preposities:['houden van','wachten op'],
+      woorden:[{woord:'avontuur',meervoud:'avonturen',artikel:'het'},
+               {woord:'gevoel',  meervoud:'gevoelens', artikel:'het'}] } },
+  { id:'d2', dag:'Dinsdag',  format:'Schrijf een gesprek',
+    prompt_nl:'Schrijf een WhatsApp-gesprek tussen jou en een vriend over plannen voor het weekend.',
+    constraints:{ preposities:['praten over','denken aan'],
+      woorden:[{woord:'afspraak',meervoud:'afspraken',artikel:'de'},
+               {woord:'plan',    meervoud:'plannen',   artikel:'het'}] } },
+  { id:'d3', dag:'Woensdag', format:'Beschrijf een foto',
+    prompt_nl:'Stel je voor dat je een foto ziet van een drukke markt in Rotterdam. Beschrijf wat je ziet.',
+    constraints:{ preposities:['kijken naar','staan bij'],
+      woorden:[{woord:'gebouw',meervoud:'gebouwen',artikel:'het'},
+               {woord:'straat',meervoud:'straten', artikel:'de'}] } },
+  { id:'d4', dag:'Donderdag',format:'Jouw mening',
+    prompt_nl:'Vind jij het moeilijk om Nederlands te leren? Waarom wel of niet?',
+    constraints:{ preposities:['nadenken over','goed zijn in'],
+      woorden:[{woord:'fout',meervoud:'fouten', artikel:'de'},
+               {woord:'woord',meervoud:'woorden',artikel:'het'}] } },
+  { id:'d5', dag:'Vrijdag',  format:'Vrij schrijven',
+    prompt_nl:'Schrijf over iets wat je dit weekend wil doen. Gebruik zoveel mogelijk Nederlandse woorden die je kent.',
+    constraints:{ preposities:['zin hebben in','kijken naar'],
+      woorden:[{woord:'moment',meervoud:'momenten',artikel:'het'},
+               {woord:'dag',   meervoud:'dagen',   artikel:'de'}] } },
+  { id:'d6', dag:'Zaterdag', format:'Vertel een verhaal',
+    prompt_nl:'Beschrijf je favoriete plek in de stad waar je woont. Waarom houd je van die plek?',
+    constraints:{ preposities:['houden van','denken aan'],
+      woorden:[{woord:'buurt',meervoud:'buurten',artikel:'de'},
+               {woord:'café', meervoud:'cafés',  artikel:'het'}] } },
+  { id:'d7', dag:'Zondag',   format:'Jouw mening',
+    prompt_nl:'Wat vind jij het moeilijkste aan leven in een ander land? Beschrijf een uitdaging.',
+    constraints:{ preposities:['wennen aan','verlangen naar'],
+      woorden:[{woord:'cultuur', meervoud:'culturen',  artikel:'de'},
+               {woord:'verschil',meervoud:'verschillen',artikel:'het'}] } }
+];
+
+// ── STORAGE ───────────────────────────────────────────────
+const K = { streak:'p_streak', last:'p_last' };
+const S = {
+  get: k       => localStorage.getItem(k) || '',
+  set: (k,v)  => localStorage.setItem(k,v),
+  getStreak:  () => parseInt(S.get(K.streak)||'0', 10),
+  tick() {
+    const today = new Date().toDateString();
+    const last  = S.get(K.last);
+    if (last === today) return;
+    const yday = new Date(); yday.setDate(yday.getDate()-1);
+    S.set(K.streak, last===yday.toDateString() ? S.getStreak()+1 : 1);
+    S.set(K.last, today);
+  }
+};
+
+// ── ROUTER ────────────────────────────────────────────────
+const showScreen = id => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  ge(id).classList.add('active');
+  window.scrollTo(0,0);
+};
+
+// ── HELPERS ───────────────────────────────────────────────
+const ge  = id  => document.getElementById(id);
+const mk  = tag => document.createElement(tag);
+const esc = t   => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+
+function typeClass(type) {
+  return {woordvorm:'cat-vorm',prepositie:'cat-prep',zinsbouw:'cat-zin',goed:'cat-goed'}[type]||'cat-goed';
+}
+function typeLabel(type) {
+  return {woordvorm:'Woordvorm',prepositie:'Voorzetsel',zinsbouw:'Zinsbouw',goed:'Goed'}[type]||type;
+}
+
+// ── PROMPT ────────────────────────────────────────────────
+let prompt = null;
+function loadPrompt() {
+  const idx = (new Date().getDay()+6) % 7 % PROMPTS.length;
+  prompt = PROMPTS[idx];
+
+  ge('home-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'});
+  ge('home-format').textContent = prompt.format;
+  ge('home-prompt').textContent = prompt.prompt_nl;
+
+  renderChips('home-preps', prompt.constraints.preposities, 'chip chip-prep');
+  renderChips('home-words', prompt.constraints.woorden.map(w=>`${w.artikel} ${w.woord}`), 'chip chip-word');
+
+  const cc = ge('canvas-chips'); cc.innerHTML='';
+  [...prompt.constraints.preposities,
+   ...prompt.constraints.woorden.map(w=>`${w.artikel} ${w.woord}`)
+  ].forEach(l => { const c=mk('span'); c.className='chip chip-mini'; c.textContent=l; cc.appendChild(c); });
+
+  ge('canvas-strip').textContent = prompt.prompt_nl;
+  ge('provider-hint').textContent = 'Feedback via: Gemini Flash';
+}
+
+function renderChips(cid, items, cls) {
+  const el = ge(cid); el.innerHTML='';
+  items.forEach(t => { const c=mk('span'); c.className=cls; c.textContent=t; el.appendChild(c); });
+}
+
+// ── CANVAS ────────────────────────────────────────────────
+ge('writing-area').addEventListener('input', () => {
+  const t = ge('writing-area').value;
+  ge('btn-submit').disabled = t.trim().length < 10;
+});
+
+// ── SYSTEM PROMPT ─────────────────────────────────────────
+function buildSys(p) {
+  const preps = p.constraints.preposities.join(', ');
+  const words = p.constraints.woorden
+    .map(w=>`"${w.woord}" (${w.artikel}-woord, meervoud: "${w.meervoud}")`).join(', ');
+  return `Je bent Pennetje — een warme, directe NT2-taaldocent voor B1-leerders.
+
+Schrijfopdracht: "${p.prompt_nl}"
+Doelvoorzetsels: ${preps}
+Doelwoorden: ${words}
+
+Geef ALLEEN deze JSON terug, geen markdown, geen uitleg buiten JSON:
+{
+  "scorecard": {
+    "preposities_correct": <getal>,
+    "preposities_totaal": <getal>,
+    "dehet_fouten": <getal>,
+    "doelwoorden_correct": <getal>,
+    "doelwoorden_totaal": <getal>
+  },
+  "annotaties": [
+    {
+      "original": "<exacte tekst uit de oefening>",
+      "correct": "<correcte versie>",
+      "type": "woordvorm|prepositie|zinsbouw|goed",
+      "uitleg": "<één zin: wat is de regel in het Nederlands>",
+      "positief": false
+    }
+  ],
+  "coach_samenvatting": "<2-3 zinnen: één concreet compliment, één verbeterpunt, bemoedigend einde>"
+}
+
+Regels:
+- Maximaal 4 annotaties totaal
+- "original" moet EXACT overeenkomen met tekst van de leerder
+- Wees nooit generiek — verwijs altijd naar wat de leerder echt schreef
+- "type" is altijd één van de vier genoemde waarden`;
+}
+
+// ── API CALL ──────────────────────────────────────────────
+async function callGemini(text) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type':   'application/json',
+      'x-goog-api-key': GEMINI_KEY
+    },
+    body: JSON.stringify({
+      system_instruction: { parts:[{ text: buildSys(prompt) }] },
+      contents: [{ role:'user', parts:[{ text }] }],
+      generationConfig: {
+        maxOutputTokens: 2000,
+        temperature:     0.3,
+        thinkingConfig:  { thinkingLevel: 'minimal' }
+      }
+    })
+  });
+
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    const msg = errBody?.error?.message || `HTTP ${res.status}`;
+    throw new Error(`Gemini API error: ${msg}`);
+  }
+
+  const d = await res.json();
+
+  // Gemini 3 thinking models return a 'thought' part before the actual text.
+  // Find the first part that is NOT a thought blob.
+  const parts = d.candidates?.[0]?.content?.parts || [];
+  const textPart = parts.find(p => p.text && !p.thought);
+  const raw = textPart?.text || '';
+
+  if (!raw) {
+    console.error('Gemini full response:', JSON.stringify(d, null, 2));
+    throw new Error('Empty response from Gemini');
+  }
+  return raw;
+}
+
+function parseJSON(raw) {
+  return JSON.parse(raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim());
+}
+
+// ── FEEDBACK FLOW ─────────────────────────────────────────
+let lastText = '';
+let lastAnnotaties = [];
+
+async function doFeedback(text) {
+  lastText = text;
+  showScreen('screen-feedback');
+  ge('fb-loading').classList.remove('hidden');
+  ge('fb-content').classList.add('hidden');
+  ge('fb-error').classList.add('hidden');
+
+  try {
+    const raw = await callGemini(text);
+    const fb = parseJSON(raw);
+    renderFeedback(fb, text);
+  } catch(e) {
+    console.error('Feedback error:', e);
+    ge('fb-loading').classList.add('hidden');
+    const errEl = ge('fb-error');
+    const errMsg = errEl.querySelector('.err-msg');
+    if (errMsg) errMsg.textContent = e.message || 'Er ging iets mis. Probeer het opnieuw.';
+    errEl.classList.remove('hidden');
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderFeedback(fb, text) {
+  const sc = fb.scorecard;
+
+  setScore('sc-prep',  'sc-prep-v',  `${sc.preposities_correct}/${sc.preposities_totaal}`,
+           sc.preposities_correct >= sc.preposities_totaal);
+  setScore('sc-dehet', 'sc-dehet-v', sc.dehet_fouten===0 ? '✓' : `${sc.dehet_fouten}×`,
+           sc.dehet_fouten===0);
+  setScore('sc-words', 'sc-words-v', `${sc.doelwoorden_correct}/${sc.doelwoorden_totaal}`,
+           sc.doelwoorden_correct >= sc.doelwoorden_totaal);
+
+  const annos = fb.annotaties || [];
+  lastAnnotaties = annos;
+  renderAnno(text, annos);
+
+  const hasErrors = annos.some(a => !a.positief);
+  ge('tap-hint').style.display = hasErrors ? 'inline' : 'none';
+
+  renderCorrections(annos);
+  ge('coach-bubble').textContent = fb.coach_samenvatting;
+
+  ge('fb-loading').classList.add('hidden');
+  ge('fb-content').classList.remove('hidden');
+}
+
+function setScore(chipId, valId, val, isGood) {
+  const chip = ge(chipId);
+  chip.classList.toggle('good', isGood);
+  chip.classList.toggle('miss', !isGood);
+  chip.querySelector('.sc-icon').textContent = isGood ? '✓' : '✗';
+  ge(valId).textContent = val;
+}
+
+function renderAnno(text, annos) {
+  const spans = [];
+  annos.forEach((a,i) => {
+    const pos = text.indexOf(a.original);
+    if (pos !== -1) spans.push({pos, len:a.original.length, a, i});
+  });
+  spans.sort((a,b) => a.pos-b.pos);
+
+  let html='', cursor=0;
+  spans.forEach(({pos,len,a,i}) => {
+    if (pos < cursor) return;
+    if (pos > cursor) html += esc(text.slice(cursor,pos));
+    html += `<span class="${a.positief?'a-ok':'a-err'}" data-i="${i}">${esc(a.original)}</span>`;
+    cursor = pos+len;
+  });
+  if (cursor < text.length) html += esc(text.slice(cursor));
+  ge('anno-text').innerHTML = html;
+  ge('anno-text').querySelectorAll('.a-err').forEach(el => {
+    el.addEventListener('click', () => openSheet(lastAnnotaties[+el.dataset.i]));
+  });
+}
+
+function renderCorrections(annos) {
+  const errors = annos.filter(a => !a.positief);
+  const goods  = annos.filter(a =>  a.positief);
+  const block  = ge('corrections-block');
+  const list   = ge('corrections-list');
+  list.innerHTML = '';
+
+  if (!errors.length && !goods.length) {
+    block.classList.add('empty'); return;
+  }
+  block.classList.remove('empty');
+
+  errors.forEach(a => {
+    const item = mk('div'); item.className = 'correction';
+    const top = mk('div'); top.className = 'corr-row-top';
+    const badge = mk('span');
+    badge.className = `cat-badge ${typeClass(a.type)}`;
+    badge.textContent = typeLabel(a.type);
+    const wrong = mk('div'); wrong.className = 'corr-wrong';
+    wrong.textContent = `"${a.original}"`;
+    top.append(badge, wrong);
+    const fix = mk('div'); fix.className = 'corr-fix';
+    const arrow = mk('span'); arrow.className='fix-arrow'; arrow.textContent='→';
+    const val   = mk('span'); val.className  ='fix-val';   val.textContent = a.correct;
+    fix.append(arrow, val);
+    const rule = mk('div'); rule.className='corr-rule'; rule.textContent = a.uitleg;
+    item.append(top, fix, rule);
+    list.appendChild(item);
+  });
+
+  if (goods.length) {
+    goods.forEach(a => {
+      const item = mk('div'); item.className = 'correction';
+      const top  = mk('div'); top.className  = 'corr-row-top';
+      const badge = mk('span');
+      badge.className = 'cat-badge cat-goed'; badge.textContent='Goed gedaan';
+      const txt = mk('div'); txt.className = 'corr-wrong is-ok';
+      txt.textContent = `"${a.original}"`;
+      top.append(badge, txt);
+      const rule = mk('div'); rule.className='corr-rule'; rule.textContent=a.uitleg;
+      item.append(top, rule);
+      list.appendChild(item);
+    });
+  }
+}
+
+// ── BOTTOM SHEET ──────────────────────────────────────────
+function openSheet(a) {
+  const badge = ge('sh-badge');
+  badge.textContent = typeLabel(a.type);
+  badge.className   = `sh-badge ${typeClass(a.type)}`;
+  ge('sh-wrong').textContent = `"${a.original}"`;
+  ge('sh-rule').textContent  = a.uitleg;
+  const fix = ge('sh-fix');
+  if (!a.positief && a.correct !== a.original) {
+    ge('sh-fix-val').textContent = a.correct;
+    fix.classList.remove('hidden');
+  } else { fix.classList.add('hidden'); }
+  ge('sheet-bg').classList.remove('hidden');
+  ge('bottom-sheet').classList.remove('hidden');
+  requestAnimationFrame(() => {
+    ge('sheet-bg').classList.add('on');
+    ge('bottom-sheet').classList.add('on');
+  });
+}
+function closeSheet() {
+  ge('sheet-bg').classList.remove('on');
+  ge('bottom-sheet').classList.remove('on');
+  setTimeout(() => {
+    ge('sheet-bg').classList.add('hidden');
+    ge('bottom-sheet').classList.add('hidden');
+  }, 360);
+}
+ge('sheet-bg').addEventListener('click', closeSheet);
+ge('btn-begrepen').addEventListener('click', closeSheet);
+
+// ── NAV ───────────────────────────────────────────────────
+ge('btn-start').addEventListener('click', () => {
+  ge('writing-area').value='';
+  ge('btn-submit').disabled=true;
+  showScreen('screen-canvas');
+  setTimeout(() => ge('writing-area').focus(), 300);
+});
+ge('btn-back-canvas').addEventListener('click', () => showScreen('screen-home'));
+ge('btn-back-fb').addEventListener('click',     () => showScreen('screen-canvas'));
+ge('btn-submit').addEventListener('click', () => {
+  const t = ge('writing-area').value.trim();
+  if (t) doFeedback(t);
+});
+ge('btn-retry').addEventListener('click', () => { if (lastText) doFeedback(lastText); });
+ge('btn-done').addEventListener('click', () => {
+  S.tick();
+  ge('streak-count').textContent = S.getStreak();
+  showScreen('screen-home');
+});
+
+// ── INIT ─────────────────────────────────────────────────
+function init() {
+  ge('streak-count').textContent = S.getStreak();
+  loadPrompt();
+  showScreen('screen-home');
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+[
+  {
+    "id": "dag-001",
+    "dag": "Maandag",
+    "format": "Vertel een verhaal",
+    "prompt_nl": "Beschrijf een moment deze week waarop je iets nieuws probeerde. Hoe voelde dat?",
+    "constraints": {
+      "preposities": ["houden van", "wachten op"],
+      "woorden": [
+        { "woord": "avontuur", "correct_meervoud": "avonturen", "artikel": "het" },
+        { "woord": "gevoel", "correct_meervoud": "gevoelens", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-002",
+    "dag": "Dinsdag",
+    "format": "Schrijf een gesprek",
+    "prompt_nl": "Schrijf een WhatsApp-gesprek tussen jou en een vriend over plannen voor het weekend.",
+    "constraints": {
+      "preposities": ["praten over", "denken aan"],
+      "woorden": [
+        { "woord": "afspraak", "correct_meervoud": "afspraken", "artikel": "de" },
+        { "woord": "plan", "correct_meervoud": "plannen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-003",
+    "dag": "Woensdag",
+    "format": "Beschrijf een foto",
+    "prompt_nl": "Stel je voor dat je een foto ziet van een drukke markt in Rotterdam. Beschrijf wat je ziet.",
+    "constraints": {
+      "preposities": ["kijken naar", "staan bij"],
+      "woorden": [
+        { "woord": "gebouw", "correct_meervoud": "gebouwen", "artikel": "het" },
+        { "woord": "straat", "correct_meervoud": "straten", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-004",
+    "dag": "Donderdag",
+    "format": "Jouw mening",
+    "prompt_nl": "Vind jij het moeilijk om Nederlands te leren? Waarom wel of niet?",
+    "constraints": {
+      "preposities": ["nadenken over", "goed zijn in"],
+      "woorden": [
+        { "woord": "fout", "correct_meervoud": "fouten", "artikel": "de" },
+        { "woord": "woord", "correct_meervoud": "woorden", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-005",
+    "dag": "Vrijdag",
+    "format": "Vrij schrijven",
+    "prompt_nl": "Schrijf over iets wat je dit weekend wil doen. Gebruik zoveel mogelijk Nederlandse woorden die je kent.",
+    "constraints": {
+      "preposities": ["zin hebben in", "kijken naar"],
+      "woorden": [
+        { "woord": "moment", "correct_meervoud": "momenten", "artikel": "het" },
+        { "woord": "dag", "correct_meervoud": "dagen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  }
+]
