@@ -1,6 +1,6 @@
 # Schrijfoefening 📝
 
-A mobile-first Dutch writing practice app for B1 learners. Daily prompts with LLM-powered feedback on prepositions and word forms.
+A Dutch writing practice app for B1 learners. Daily prompts with LLM-powered feedback on prepositions and word forms.
 
 ## Features
 
@@ -15,20 +15,7 @@ A mobile-first Dutch writing practice app for B1 learners. Daily prompts with LL
 
 Vanilla HTML, CSS, JavaScript (ES modules). No framework, no build step. Open `index.html` and go.
 
-## Setup
-
-1. Clone the repo
-2. Get an API key from [console.anthropic.com](https://console.anthropic.com)
-3. Open `index.html` in a browser (or serve locally with `npx serve .`)
-4. Enter your API key when prompted — stored locally, never sent anywhere except Anthropic's API
-
-```bash
-git clone https://github.com/yourusername/schrijfoefening
-cd schrijfoefening
-npx serve .
 ```
-
-> **Note:** The Anthropic API requires `anthropic-dangerous-direct-browser-access: true` for browser-based calls. Your key is stored in localStorage only.
 
 ## Adding Prompts
 
