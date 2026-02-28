@@ -170,28 +170,36 @@
     .home-heading { font-size: 1.1875rem; font-weight: 700; color: var(--t1); letter-spacing: -0.02em; line-height: 1.3; margin-top: 3px; }
     .home-heading em { color: var(--brand); font-style: normal; }
 
-    /* Prompt card */
+    /* Prompt card — clean list variant */
     .prompt-card {
-      background: var(--paper-1); border: 1px solid var(--border);
-      border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--s-md);
+      background: #fff;
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--r-lg);
       position: relative;
+      cursor: pointer;
+      transition: border-color 140ms, background 140ms, box-shadow 140ms, transform 100ms;
     }
-    /* The signature margin line — terracotta, appears in canvas too */
-    .prompt-card::after {
-      content: ''; position: absolute;
-      left: 0; top: 0; bottom: 0; width: 3px;
-      background: var(--brand);
+    .prompt-card:active { transform: scale(0.99); }
+    .prompt-card.selected {
+      border-color: var(--brand);
+      background: var(--brand-light);
+      box-shadow: 0 0 0 3px var(--brand-mid);
     }
-    .card-top { height: 3px; background: var(--brand); }
-    .card-inner { padding: 16px 16px 18px 20px; }
+    .prompt-card.recommended {
+      border-color: var(--border);
+      box-shadow: var(--s-sm);
+    }
+    .card-top { display: none; }
+    .card-inner { padding: 14px 16px 16px; }
 
     .card-format {
-      font-size: 0.625rem; font-weight: 700; letter-spacing: 0.11em;
-      text-transform: uppercase; color: var(--brand); margin-bottom: 6px;
+      font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--t4); margin-bottom: 5px;
     }
+    .card-format.is-recommended { color: var(--brand); }
     .card-q {
-      font-size: 1rem; line-height: 1.65; font-weight: 500;
-      color: var(--t1); margin-bottom: 18px;
+      font-size: 0.9375rem; line-height: 1.6; font-weight: 500;
+      color: var(--t1); margin-bottom: 14px;
     }
     .cg { margin-bottom: 10px; }
     .cg:last-child { margin-bottom: 0; }
@@ -474,21 +482,9 @@
       <h2 class="home-heading">Klaar voor je <em>dagelijkse</em> oefening?</h2>
     </div>
 
-    <div class="prompt-card">
-      <div class="card-top"></div>
-      <div class="card-inner">
-        <p class="card-format" id="home-format">laden...</p>
-        <p class="card-q" id="home-prompt">—</p>
-        <div class="cg">
-          <span class="cg-label">Voorzetsels om te gebruiken</span>
-          <div class="chips" id="home-preps"></div>
-        </div>
-        <div class="cg">
-          <span class="cg-label">Doelwoorden — let op de/het + meervoud</span>
-          <div class="chips" id="home-words"></div>
-        </div>
-      </div>
-    </div>
+    <div id="prompt-list"></div>
+
+    <button class="btn-ghost" id="btn-show-all" style="display:none;margin-top:2px">Toon alle opdrachten ↓</button>
 
     <div class="tip-bar">
       <span>✏️</span>
@@ -498,8 +494,8 @@
     <p class="provider-hint" id="provider-hint"></p>
   </main>
 
-  <footer class="s-footer">
-    <button class="btn-primary" id="btn-start">Begin met schrijven →</button>
+  <footer class="s-footer" id="home-footer">
+    <button class="btn-primary" id="btn-start" disabled>Kies een opdracht om te beginnen</button>
   </footer>
 </div>
 
@@ -700,32 +696,119 @@ function typeLabel(type) {
   return {woordvorm:'Woordvorm',prepositie:'Voorzetsel',zinsbouw:'Zinsbouw',goed:'Goed'}[type]||type;
 }
 
+// ── SEEDED SHUFFLE (mulberry32) ───────────────────────────
+function seededRng(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function shuffleWithSeed(arr, seed) {
+  const a = [...arr];
+  const rng = seededRng(seed);
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function dateSeed() {
+  const d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
+}
+
 // ── PROMPT ────────────────────────────────────────────────
 let prompt = null;
-function loadPrompt() {
-  const idx = (new Date().getDay()+6) % 7 % PROMPTS.length;
-  prompt = PROMPTS[idx];
+const SHOW_INITIAL = 10;
 
-  ge('home-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'});
-  ge('home-format').textContent = prompt.format;
-  ge('home-prompt').textContent = prompt.prompt_nl;
+let selectedCard = null;
 
-  renderChips('home-preps', prompt.constraints.preposities, 'chip chip-prep');
-  renderChips('home-words', prompt.constraints.woorden.map(w=>`${w.artikel} ${w.woord}`), 'chip chip-word');
+function selectPrompt(p, cardEl) {
+  prompt = p;
 
+  // Deselect previous
+  if (selectedCard) selectedCard.classList.remove('selected');
+  selectedCard = cardEl;
+  cardEl.classList.add('selected');
+
+  // Enable and update CTA
+  const btn = ge('btn-start');
+  btn.disabled = false;
+  btn.textContent = 'Begin met schrijven →';
+}
+
+function goToCanvas() {
+  if (!prompt) return;
   const cc = ge('canvas-chips'); cc.innerHTML='';
   [...prompt.constraints.preposities,
    ...prompt.constraints.woorden.map(w=>`${w.artikel} ${w.woord}`)
   ].forEach(l => { const c=mk('span'); c.className='chip chip-mini'; c.textContent=l; cc.appendChild(c); });
-
   ge('canvas-strip').textContent = prompt.prompt_nl;
-  ge('provider-hint').textContent = 'Feedback via: Gemini Flash';
+  ge('writing-area').value='';
+  ge('btn-submit').disabled=true;
+  showScreen('screen-canvas');
+  setTimeout(() => ge('writing-area').focus(), 300);
 }
 
-function renderChips(cid, items, cls) {
-  const el = ge(cid); el.innerHTML='';
-  items.forEach(t => { const c=mk('span'); c.className=cls; c.textContent=t; el.appendChild(c); });
+function makePromptCard(p, isRecommended) {
+  const card = mk('div');
+  card.className = 'prompt-card' + (isRecommended ? ' recommended' : '');
+
+  const inner = mk('div'); inner.className='card-inner';
+
+  const fmt = mk('p'); fmt.className='card-format' + (isRecommended ? ' is-recommended' : '');
+  fmt.textContent = isRecommended ? '⭐ Aanbevolen voor vandaag' : p.format;
+  inner.appendChild(fmt);
+
+  const q = mk('p'); q.className='card-q'; q.textContent=p.prompt_nl; inner.appendChild(q);
+
+  const cgP = mk('div'); cgP.className='cg';
+  const lP = mk('span'); lP.className='cg-label'; lP.textContent='Voorzetsels';
+  const chipsP = mk('div'); chipsP.className='chips';
+  p.constraints.preposities.forEach(t => { const c=mk('span'); c.className='chip chip-prep'; c.textContent=t; chipsP.appendChild(c); });
+  cgP.append(lP, chipsP); inner.appendChild(cgP);
+
+  const cgW = mk('div'); cgW.className='cg';
+  const lW = mk('span'); lW.className='cg-label'; lW.textContent='Doelwoorden';
+  const chipsW = mk('div'); chipsW.className='chips';
+  p.constraints.woorden.map(w=>`${w.artikel} ${w.woord}`).forEach(t => { const c=mk('span'); c.className='chip chip-word'; c.textContent=t; chipsW.appendChild(c); });
+  cgW.append(lW, chipsW); inner.appendChild(cgW);
+
+  card.appendChild(inner);
+  card.addEventListener('click', () => selectPrompt(p, card));
+  return card;
 }
+
+function loadPrompt() {
+  ge('home-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'});
+  ge('provider-hint').textContent = 'Feedback via: Gemini Flash';
+
+  const shuffled = shuffleWithSeed(PROMPTS, dateSeed());
+  const list = ge('prompt-list');
+  list.innerHTML='';
+  list.style.cssText='display:flex;flex-direction:column;gap:14px;';
+
+  shuffled.forEach((p, i) => {
+    const card = makePromptCard(p, i === 0);
+    if (i >= SHOW_INITIAL) card.classList.add('hidden');
+    list.appendChild(card);
+    // Auto-select the recommended card
+    if (i === 0) selectPrompt(p, card);
+  });
+
+  const btnAll = ge('btn-show-all');
+  if (shuffled.length > SHOW_INITIAL) {
+    btnAll.style.display = 'block';
+    btnAll.addEventListener('click', () => {
+      list.querySelectorAll('.prompt-card.hidden').forEach(c => c.classList.remove('hidden'));
+      btnAll.style.display = 'none';
+    }, { once: true });
+  }
+
+}
+
 
 // ── CANVAS ────────────────────────────────────────────────
 ge('writing-area').addEventListener('input', () => {
@@ -972,14 +1055,8 @@ function closeSheet() {
 }
 ge('sheet-bg').addEventListener('click', closeSheet);
 ge('btn-begrepen').addEventListener('click', closeSheet);
-
 // ── NAV ───────────────────────────────────────────────────
-ge('btn-start').addEventListener('click', () => {
-  ge('writing-area').value='';
-  ge('btn-submit').disabled=true;
-  showScreen('screen-canvas');
-  setTimeout(() => ge('writing-area').focus(), 300);
-});
+ge('btn-start').addEventListener('click', goToCanvas);
 ge('btn-back-canvas').addEventListener('click', () => showScreen('screen-home'));
 ge('btn-back-fb').addEventListener('click',     () => showScreen('screen-canvas'));
 ge('btn-submit').addEventListener('click', () => {
