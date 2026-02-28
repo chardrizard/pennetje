@@ -642,6 +642,7 @@
 
 <script>
 // ── CONFIG ────────────────────────────────────────────────
+const GEMINI_KEY   = 'AIzaSyAMqd7RwD4Q-n7iHCJyBRNDS9iT5LZqa80';
 const GEMINI_MODEL = 'gemini-2.0-flash';
 
 // ── PROMPTS ──────────────────────────────────────────────
@@ -926,7 +927,7 @@ function goToCanvasFromLibrary() {
 
 function loadPrompt() {
   ge('home-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'});
-  ge('provider-hint').textContent = 'Feedback via: Anthropic Claude API';
+  ge('provider-hint').textContent = 'Feedback via: Gemini Flash';
 
   var shuffled = shuffleWithSeed(PROMPTS, dateSeed());
   var list = ge('prompt-list');
@@ -994,28 +995,40 @@ function buildSys(p) {
     '- "type" is altijd \u00e9\u00e9n van de vier genoemde waarden';
 }
 
-// ── API CALL (Claude via Anthropic API) ───────────────────
+// ── API CALL (Gemini) ─────────────────────────────────────
 async function callLLM(text) {
-  var response = await fetch('https://api.anthropic.com/v1/messages', {
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent';
+  var res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type':   'application/json',
+      'x-goog-api-key': GEMINI_KEY
+    },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: buildSys(prompt),
-      messages: [{ role: 'user', content: text }]
+      system_instruction: { parts:[{ text: buildSys(prompt) }] },
+      contents: [{ role:'user', parts:[{ text: text }] }],
+      generationConfig: {
+        maxOutputTokens: 2000,
+        temperature:     0.3
+      }
     })
   });
 
-  if (!response.ok) {
+  if (!res.ok) {
     var errBody = {};
-    try { errBody = await response.json(); } catch(e) {}
-    throw new Error(errBody.error ? errBody.error.message : 'API error: ' + response.status);
+    try { errBody = await res.json(); } catch(e) {}
+    var msg = (errBody.error && errBody.error.message) ? errBody.error.message : ('HTTP ' + res.status);
+    throw new Error('Gemini API error: ' + msg);
   }
 
-  var d = await response.json();
-  var raw = (d.content && d.content[0] && d.content[0].text) || '';
-  if (!raw) throw new Error('Empty response from API');
+  var d = await res.json();
+  var parts = (d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts) || [];
+  var textPart = null;
+  for (var i = 0; i < parts.length; i++) {
+    if (parts[i].text && !parts[i].thought) { textPart = parts[i]; break; }
+  }
+  var raw = textPart ? textPart.text : '';
+  if (!raw) throw new Error('Empty response from Gemini');
   return raw;
 }
 
