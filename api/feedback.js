@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   const { text, promptData } = req.body;
 
-  // Access the secure environment variable (never exposed to the browser)
+  // Access the secure environment variable
   const apiKey = process.env.LLM_API_KEY;
 
   if (!apiKey) {
@@ -17,31 +17,47 @@ export default async function handler(req, res) {
   // Build the system prompt on the server side
   const preposities = promptData.constraints.preposities.join(', ');
   const woorden = promptData.constraints.woorden
-    .map(w => `"${w.woord}" (${w.artikel}-word, correct meervoud: "${w.correct_meervoud}")`)
+    .map(w => \`"\${w.woord}" (\${w.artikel}-word, correct meervoud: "\${w.correct_meervoud}")\`)
     .join(', ');
 
-  const systemPrompt = `Je bent een warme, aanmoedigende Nederlandse taaldocent (NT2) die feedback geeft aan een B1-leerder.
+  const systemPrompt = \`Je bent een warme, aanmoedigende Nederlandse taaldocent (NT2) die feedback geeft aan een B1-leerder.
 
 De leerder heeft een schrijfoefening gedaan met de volgende opdracht:
-Prompt: "${promptData.prompt_nl}"
+Prompt: "\${promptData.prompt_nl}"
 
 Doelwoorden om op te controleren:
-- Voorzetsels/werkwoord+voorzetsel combinaties: ${preposities}
-- Doelwoorden (let op de/het en meervoud): ${woorden}
+- Voorzetsels/werkwoord+voorzetsel combinaties: \${preposities}
+- Doelwoorden (let op de/het en meervoud): \${woorden}
 
 Belangrijk: Geef alle details over de correcties, niet alleen de grootste of belangrijkste fouten. Elke kleine fout moet worden benoemd.
 
 Geef feedback in deze JSON structuur, en ALLEEN JSON, geen andere tekst:
+
 {
   "scorecard": {
-    "preposities_correct": 0,
-    "preposities_totaal": 0,
-    "dehet_fouten": 0,
-    "doelwoorden_correct": 0,
-    "doelwoorden_totaal": 0
+    "preposities_correct": <aantal correct gebruikte doelvoorzetsels>,
+    "preposities_totaal": <aantal doelvoorzetsels die ze hadden moeten gebruiken>,
+    "dehet_fouten": <aantal de/het of meervoud fouten>,
+    "doelwoorden_correct": <aantal doelwoorden correct gebruikt>,
+    "doelwoorden_totaal": <totaal aantal doelwoorden>
   },
-  "annotaties": [ ... ]
-}`;
+  "annotaties": [
+    {
+      "original": "<exact de tekst uit de schrijfoefening>",
+      "correct": "<de correcte vorm>",
+      "type": "woordvorm|prepositie|zinsbouw",
+      "uitleg": "<één concrete zin uitleg in het Nederlands, vriendelijk>",
+      "positief": <true als het goed is, false als het een fout is>
+    }
+  ],
+  "coach_samenvatting": "<3-4 zinnen als een echte tutor: noem één specifiek goed punt, één specifiek verbeterpunt, eindig bemoedigend. Gebruik 'je' en schrijf in de tweede persoon. Nooit generiek.>"
+}
+
+Regels:
+- Geef maximaal 4 annotaties (mix van goed en fout)
+- Wees specifiek, nooit generiek
+- Toon altijd meer positieven dan negatieven als dat mogelijk is
+- De coach_samenvatting moet persoonlijk en specifiek zijn\`;
 
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -52,7 +68,7 @@ Geef feedback in deze JSON structuur, en ALLEEN JSON, geen andere tekst:
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-haiku-20240307', // Change to your preferred model
+        model: 'claude-3-haiku-20240307',
         max_tokens: 1500,
         system: systemPrompt,
         messages: [{ role: 'user', content: text }]
