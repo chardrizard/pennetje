@@ -49,12 +49,11 @@ Geef feedback in deze JSON structuur, en ALLEEN JSON, geen andere tekst:
 }`;
 
   try {
-    // Calling the Gemini API using the secure x-goog-api-key header
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent`, {
+    // Calling the Gemini API using the API key in the URL query parameters
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey.trim()}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey.trim()
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         system_instruction: {
