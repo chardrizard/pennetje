@@ -49,8 +49,8 @@ Geef feedback in deze JSON structuur, en ALLEEN JSON, geen andere tekst:
 }`;
 
   try {
-    // Calling the Gemini API with the key in the URL
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // Calling the Gemini API using the gemini-3-flash-preview model
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
