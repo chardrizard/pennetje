@@ -980,6 +980,8 @@ function updateLibrarySelection(selectedId) {
     btn.textContent = isThis ? '✓ Geselecteerd' : 'Gebruik deze →';
   });
 }
+
+function loadPrompt() {
   ge('home-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'});
   ge('provider-hint').textContent = 'Feedback via: Gemini Flash';
 
