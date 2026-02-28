@@ -46,29 +46,23 @@ Regels:
 - De coach_samenvatting moet persoonlijk en specifiek zijn`;
 }
 
-export async function getFeedback(userText, prompt) {
-  const apiKey = getApiKey();
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+// feedback.js
+export async function getFeedback(text, prompt) {
+  const response = await fetch('/api/feedback', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      system: buildSystemPrompt(prompt),
-      messages: [
-        {
-          role: 'user',
-          content: userText,
-        }
-      ]
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: text, promptData: prompt })
   });
+
+  if (!response.ok) {
+    throw new Error('Network error generating feedback');
+  }
+
+  const data = await response.json();
+  // Extract JSON from the LLM response. 
+  // Adjust parsing depending on the exact structure returned by the LLM
+  return JSON.parse(data.content[0].text);
+};
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
