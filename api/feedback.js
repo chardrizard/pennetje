@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const apiKey = process.env.LLM_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ error: 'API key is missing' });
+    return res.status(500).json({ error: 'API key is missing on the server' });
   }
 
   const preposities = promptData.constraints.preposities.join(', ');
@@ -49,11 +49,12 @@ Geef feedback in deze JSON structuur, en ALLEEN JSON, geen andere tekst:
 }`;
 
   try {
-    // Calling the Gemini API using the gemini-3-flash-preview model
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
+    // Calling the Gemini API using the secure x-goog-api-key header
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey.trim()
       },
       body: JSON.stringify({
         system_instruction: {
