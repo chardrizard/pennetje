@@ -642,8 +642,9 @@
 
 <script>
 // ── CONFIG ────────────────────────────────────────────────
-const GEMINI_KEY   = '';
-const GEMINI_MODEL = 'gemini-2.0-flash';
+// Point to your Vercel deployment (no trailing slash)
+// TODO: Replace with your actual Vercel URL
+const VERCEL_API_URL = 'https://your-app-name.vercel.app';
 
 // ── PROMPTS ──────────────────────────────────────────────
 const PROMPTS = [
@@ -959,65 +960,19 @@ ge('writing-area').addEventListener('input', function() {
   ge('btn-submit').disabled = t.trim().length < 10;
 });
 
-// ── SYSTEM PROMPT ─────────────────────────────────────────
-function buildSys(p) {
-  var preps = p.constraints.preposities.join(', ');
-  var words = p.constraints.woorden
-    .map(function(w){ return '"' + w.woord + '" (' + w.artikel + '-woord, meervoud: "' + w.meervoud + '")'; }).join(', ');
-  return 'Je bent Pennetje \u2014 een warme, directe NT2-taaldocent voor B1-leerders.\n\n' +
-    'Schrijfopdracht: "' + p.prompt_nl + '"\n' +
-    'Doelvoorzetsels: ' + preps + '\n' +
-    'Doelwoorden: ' + words + '\n\n' +
-    'Geef ALLEEN deze JSON terug, geen markdown, geen uitleg buiten JSON:\n' +
-    '{\n' +
-    '  "scorecard": {\n' +
-    '    "preposities_correct": <getal>,\n' +
-    '    "preposities_totaal": <getal>,\n' +
-    '    "dehet_fouten": <getal>,\n' +
-    '    "doelwoorden_correct": <getal>,\n' +
-    '    "doelwoorden_totaal": <getal>\n' +
-    '  },\n' +
-    '  "annotaties": [\n' +
-    '    {\n' +
-    '      "original": "<exacte tekst uit de oefening>",\n' +
-    '      "correct": "<correcte versie>",\n' +
-    '      "type": "woordvorm|prepositie|zinsbouw|goed",\n' +
-    '      "uitleg": "<\u00e9\u00e9n zin: wat is de regel in het Nederlands>",\n' +
-    '      "positief": false\n' +
-    '    }\n' +
-    '  ],\n' +
-    '  "coach_samenvatting": "<2-3 zinnen: \u00e9\u00e9n concreet compliment, \u00e9\u00e9n verbeterpunt, bemoedigend einde>"\n' +
-    '}\n\n' +
-    'Regels:\n' +
-    '- Maximaal 4 annotaties totaal\n' +
-    '- "original" moet EXACT overeenkomen met tekst van de leerder\n' +
-    '- Wees nooit generiek \u2014 verwijs altijd naar wat de leerder echt schreef\n' +
-    '- "type" is altijd \u00e9\u00e9n van de vier genoemde waarden';
-}
-
 // ── API CALL (Gemini) ─────────────────────────────────────
 async function callLLM(text) {
-  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent?key=' + GEMINI_KEY;
-  var res = await fetch(url, {
+  var res = await fetch(VERCEL_API_URL + '/api/feedback', {
     method: 'POST',
-    headers: {
-      'Content-Type':   'application/json'
-    },
-    body: JSON.stringify({
-      system_instruction: { parts:[{ text: buildSys(prompt) }] },
-      contents: [{ role:'user', parts:[{ text: text }] }],
-      generationConfig: {
-        maxOutputTokens: 2000,
-        temperature:     0.3
-      }
-    })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: text, promptData: prompt })
   });
 
   if (!res.ok) {
     var errBody = {};
     try { errBody = await res.json(); } catch(e) {}
-    var msg = (errBody.error && errBody.error.message) ? errBody.error.message : ('HTTP ' + res.status);
-    throw new Error('Gemini API error: ' + msg);
+    var msg = errBody.error || ('HTTP ' + res.status);
+    throw new Error(msg);
   }
 
   var d = await res.json();
