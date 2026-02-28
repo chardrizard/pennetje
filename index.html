@@ -5,40 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Pennetje</title>
   <style>
-    /* ═══════════════════════════════════════════
-       PENNETJE — Design tokens
-       World: stroopwafel caramel, kraft paper,
-              sage notebook cover, pencil wood,
-              wax-seal terracotta
-       Font: native system stack — zero load time
-    ═══════════════════════════════════════════ */
     :root {
       --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
               'Helvetica Neue', Arial, sans-serif;
 
-      /* Paper surfaces — barely different, always warm */
-      --paper-0: #faf7f2;   /* body bg */
-      --paper-1: #f3ede4;   /* card surface */
-      --paper-2: #ece4d8;   /* pressed / active */
-      --paper-3: #e0d6c8;   /* stronger divider */
+      --paper-0: #faf7f2;
+      --paper-1: #f3ede4;
+      --paper-2: #ece4d8;
+      --paper-3: #e0d6c8;
 
-      /* Borders — light, never first thing you see */
       --border:  #d4c9b8;
       --border-light: #e4dbd0;
 
-      /* Text hierarchy */
-      --t1: #1e1a15;   /* headings */
-      --t2: #3a3228;   /* body */
-      --t3: #6b5e50;   /* secondary */
-      --t4: #a0917e;   /* placeholder, labels */
+      --t1: #1e1a15;
+      --t2: #3a3228;
+      --t3: #6b5e50;
+      --t4: #a0917e;
 
-      /* Brand — terracotta from a Dutch wax seal */
       --brand:       #b85c38;
       --brand-dark:  #9a4828;
       --brand-light: #fbf0eb;
       --brand-mid:   #edc5b3;
 
-      /* Semantic — kept warm, never cold */
       --err:         #c03030;
       --err-light:   #fef2f2;
       --err-border:  #f0bfbf;
@@ -51,7 +39,6 @@
       --note-light:  #fdf6e8;
       --note-border: #dfc88a;
 
-      /* Category badge colours — muted, warm */
       --cat-vorm-bg:    #fdf0e0; --cat-vorm-fg:    #7a4a0e; --cat-vorm-br: #e8c88a;
       --cat-prep-bg:    #f5eef8; --cat-prep-fg:    #5a2d78; --cat-prep-br: #d4aee8;
       --cat-zin-bg:     #eef5f0; --cat-zin-fg:     #1e5a38; --cat-zin-br:  #aed4c0;
@@ -62,7 +49,6 @@
       --r-xl: 20px;
       --r-full: 100px;
 
-      /* Depth strategy: subtle shadows only */
       --s-sm: 0 1px 3px rgba(30,26,21,0.07);
       --s-md: 0 3px 10px rgba(30,26,21,0.09), 0 1px 3px rgba(30,26,21,0.05);
       --s-lg: 0 8px 24px rgba(30,26,21,0.11), 0 2px 6px rgba(30,26,21,0.06);
@@ -70,7 +56,6 @@
       --ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* ── Reset ── */
     *, *::before, *::after {
       box-sizing: border-box; margin: 0; padding: 0;
       -webkit-tap-highlight-color: transparent;
@@ -88,11 +73,9 @@
     textarea, input { font-family: var(--font); }
     .hidden { display: none !important; }
 
-    /* ── Screen shell ── */
     .screen { display: none; flex-direction: column; min-height: 100dvh; }
     .screen.active { display: flex; }
 
-    /* ── Sticky header ── */
     .s-header {
       display: flex; align-items: center; gap: 12px;
       padding: 12px 16px;
@@ -106,7 +89,6 @@
     .wordmark { font-size: 1rem; font-weight: 700; color: var(--t1); letter-spacing: -0.02em; }
     .wordmark em { color: var(--brand); font-style: italic; font-weight: 600; }
 
-    /* ── Sticky footer ── */
     .s-footer {
       padding: 12px 16px;
       padding-bottom: max(16px, env(safe-area-inset-bottom));
@@ -115,7 +97,6 @@
       position: sticky; bottom: 0;
     }
 
-    /* ── Buttons ── */
     .btn-primary {
       display: block; width: 100%; padding: 14px 20px;
       background: var(--brand); color: #fff;
@@ -146,7 +127,6 @@
     }
     .btn-icon:active { background: var(--paper-1); }
 
-    /* ── Streak pill ── */
     .streak {
       display: flex; align-items: center; gap: 4px;
       background: var(--note-light); border: 1px solid var(--note-border);
@@ -154,23 +134,18 @@
     }
     .streak-n { font-size: 0.875rem; font-weight: 700; color: var(--note); }
 
-    /* ── Chips ── */
     .chips { display: flex; flex-wrap: wrap; gap: 6px; }
     .chip { display: inline-flex; align-items: center; padding: 4px 11px; border-radius: var(--r-full); font-size: 0.8125rem; font-weight: 500; }
     .chip-prep  { background: var(--brand-light); border: 1px solid var(--brand-mid); color: var(--brand-dark); font-style: italic; }
     .chip-word  { background: var(--t1); color: var(--paper-0); }
     .chip-mini  { background: var(--paper-1); border: 1px solid var(--border); color: var(--t3); font-style: italic; font-size: 0.75rem; padding: 3px 9px; }
 
-    /* ═══════════════════════════════════════════
-       HOME SCREEN
-    ═══════════════════════════════════════════ */
     .home-body { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
 
     .home-eyebrow { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--t4); }
     .home-heading { font-size: 1.1875rem; font-weight: 700; color: var(--t1); letter-spacing: -0.02em; line-height: 1.3; margin-top: 3px; }
     .home-heading em { color: var(--brand); font-style: normal; }
 
-    /* Prompt card — clean list variant */
     .prompt-card {
       background: #fff;
       border: 1.5px solid var(--border-light);
@@ -218,7 +193,6 @@
 
     .provider-hint { font-size: 0.75rem; color: var(--t4); text-align: center; }
 
-    /* ── Browse-all link ── */
     .browse-link {
       display: flex; align-items: center; justify-content: center; gap: 6px;
       font-size: 0.875rem; color: var(--t3); padding: 10px 0;
@@ -233,9 +207,6 @@
       font-size: 0.75rem; color: var(--t3); flex-shrink: 0;
     }
 
-    /* ═══════════════════════════════════════════
-       LIBRARY SCREEN
-    ═══════════════════════════════════════════ */
     .lib-body {
       flex: 1; overflow-y: auto;
       padding: 16px; display: flex; flex-direction: column; gap: 12px;
@@ -249,7 +220,6 @@
     }
     .lib-intro-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
 
-    /* Library card — same selection pattern as home cards */
     .lib-card {
       background: #fff;
       border: 1.5px solid var(--border-light);
@@ -289,9 +259,6 @@
       margin-top: 10px;
     }
 
-    /* ═══════════════════════════════════════════
-       CANVAS SCREEN
-    ═══════════════════════════════════════════ */
     .canvas-hdr { flex-wrap: wrap; align-items: flex-start; gap: 8px; padding-bottom: 10px; }
     .canvas-chips-wrap { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; min-width: 0; }
 
@@ -303,7 +270,6 @@
 
     .canvas-main { flex: 1; display: flex; overflow: hidden; }
 
-    /* Ruled paper — the signature element */
     .paper-wrap {
       flex: 1; position: relative; display: flex;
       background: var(--paper-1);
@@ -332,11 +298,6 @@
     .sent-target { color: var(--t4); }
     .canvas-footer .btn-primary { flex: 1; font-size: 0.875rem; min-height: 46px; }
 
-    /* ═══════════════════════════════════════════
-       FEEDBACK SCREEN
-       Most important area — designed for learning,
-       not just display.
-    ═══════════════════════════════════════════ */
     .fb-loading {
       display: flex; flex-direction: column; align-items: center;
       justify-content: center; flex: 1; gap: 14px; padding: 60px 24px;
@@ -353,7 +314,6 @@
     .fb-content { display: flex; flex-direction: column; flex: 1; }
     .fb-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
 
-    /* ── 1. Score strip — compact, not dominating ── */
     .score-strip {
       display: flex; gap: 8px;
       animation: up 320ms var(--ease) both;
@@ -369,7 +329,6 @@
     .sc-lbl  { font-size: 0.5rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--t4); }
     .sc-val  { font-size: 0.9375rem; font-weight: 700; color: var(--t1); }
 
-    /* ── 2. Annotated text — with tap hint ── */
     .fb-block {
       background: var(--paper-1); border: 1px solid var(--border);
       border-radius: var(--r-lg); overflow: hidden;
@@ -400,13 +359,6 @@
       border-radius: 2px; padding: 1px 2px; color: var(--ok);
     }
 
-    /* ── 3. Corrections — the main learning area ──
-       For every mistake:
-         Category badge
-         Wrong form (struck through or red)
-         → Correct form (prominent)
-         Rule (plain language, one sentence)
-    ── */
     .corrections-block {
       background: var(--paper-1); border: 1px solid var(--border);
       border-radius: var(--r-lg); overflow: hidden;
@@ -421,7 +373,6 @@
     }
     .correction:last-child { border-bottom: none; }
 
-    /* Top row: category + wrong form */
     .corr-row-top { display: flex; align-items: flex-start; gap: 8px; }
     .cat-badge {
       flex-shrink: 0; margin-top: 2px;
@@ -440,7 +391,6 @@
     }
     .corr-wrong.is-ok { color: var(--ok); font-style: normal; }
 
-    /* The fix — most prominent element per correction */
     .corr-fix {
       display: flex; align-items: center; gap: 10px;
       background: var(--ok-light);
@@ -450,13 +400,11 @@
     .fix-arrow { font-size: 0.875rem; color: var(--ok); flex-shrink: 0; font-weight: 700; }
     .fix-val { font-size: 1rem; font-weight: 700; color: var(--ok); flex: 1; }
 
-    /* The rule — plain, readable */
     .corr-rule {
       font-size: 0.875rem; line-height: 1.6; color: var(--t3);
       border-left: 2px solid var(--border); padding-left: 10px;
     }
 
-    /* ── 4. Coach note ── */
     .coach-wrap {
       display: flex; gap: 10px; align-items: flex-start;
       animation: up 320ms var(--ease) 160ms both;
@@ -473,7 +421,6 @@
       color: var(--t2); flex: 1;
     }
 
-    /* FB Error */
     .fb-error {
       display: flex; flex-direction: column; align-items: center;
       justify-content: center; gap: 14px;
@@ -486,9 +433,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ═══════════════════════════════════════════
-       BOTTOM SHEET (tap an annotated error)
-    ═══════════════════════════════════════════ */
     .sheet-bg {
       position: fixed; inset: 0; background: rgba(30,26,21,0.42);
       z-index: 40; opacity: 0; transition: opacity 220ms var(--ease);
@@ -517,11 +461,6 @@
     .sh-fix-lbl { font-size: 0.8125rem; font-weight: 600; color: var(--ok); }
     .sh-fix-val { font-size: 1.0625rem; font-weight: 700; color: var(--ok); }
 
-
-
-    /* ═══════════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════════ */
     @media (min-width: 480px) {
       body { background: var(--paper-2); }
       .screen { max-width: 480px; margin: 0 auto; }
@@ -534,13 +473,11 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     HOME SCREEN
-══════════════════════════════════════════ -->
+<!-- HOME SCREEN -->
 <div id="screen-home" class="screen">
   <header class="s-header">
     <div class="streak">
-      <span>🔥</span>
+      <span>&#x1F525;</span>
       <span class="streak-n" id="streak-count">0</span>
     </div>
     <div class="hd-center"><div class="wordmark">Pennet<em>je</em></div></div>
@@ -556,16 +493,16 @@
     <div id="prompt-list"></div>
 
     <button class="browse-link" id="btn-browse-all">
-      <span class="browse-link-icon">📚</span>
+      <span class="browse-link-icon">&#x1F4DA;</span>
       Bekijk alle opdrachten
-      <span style="color:var(--t4);font-size:0.75rem">→</span>
+      <span style="color:var(--t4);font-size:0.75rem">&rarr;</span>
     </button>
 
-    <button class="btn-ghost" id="btn-show-all" style="display:none;margin-top:2px">Toon alle opdrachten ↓</button>
+    <button class="btn-ghost" id="btn-show-all" style="display:none;margin-top:2px">Toon alle opdrachten &darr;</button>
 
     <div class="tip-bar">
-      <span>✏️</span>
-      <p>Schrijf <strong>5–8 zinnen</strong> zonder woordenboek. Commit aan elke keuze — zo leer je het snelst.</p>
+      <span>&#x270F;&#xFE0F;</span>
+      <p>Schrijf <strong>5&ndash;8 zinnen</strong> zonder woordenboek. Commit aan elke keuze &mdash; zo leer je het snelst.</p>
     </div>
 
     <p class="provider-hint" id="provider-hint"></p>
@@ -576,12 +513,10 @@
   </footer>
 </div>
 
-<!-- ══════════════════════════════════════════
-     CANVAS SCREEN
-══════════════════════════════════════════ -->
+<!-- CANVAS SCREEN -->
 <div id="screen-canvas" class="screen">
   <header class="s-header canvas-hdr">
-    <button class="btn-icon" id="btn-back-canvas">←</button>
+    <button class="btn-icon" id="btn-back-canvas">&larr;</button>
     <div class="canvas-chips-wrap" id="canvas-chips"></div>
   </header>
   <div class="canvas-strip" id="canvas-strip"></div>
@@ -597,73 +532,63 @@
     </div>
   </main>
   <footer class="s-footer canvas-footer">
-    <button class="btn-primary" id="btn-submit" disabled>Verstuur →</button>
+    <button class="btn-primary" id="btn-submit" disabled>Verstuur &rarr;</button>
   </footer>
 </div>
 
-<!-- ══════════════════════════════════════════
-     FEEDBACK SCREEN
-══════════════════════════════════════════ -->
+<!-- FEEDBACK SCREEN -->
 <div id="screen-feedback" class="screen">
   <header class="s-header">
-    <button class="btn-icon" id="btn-back-fb">←</button>
+    <button class="btn-icon" id="btn-back-fb">&larr;</button>
     <div class="hd-center" style="font-size:1rem;font-weight:700;color:var(--t1)">Feedback</div>
     <div class="hd-side"></div>
   </header>
 
-  <!-- Loading -->
   <div id="fb-loading" class="fb-loading">
     <div class="spinner"></div>
     <p class="loading-lbl">Pennetje leest je tekst...</p>
   </div>
 
-  <!-- Content -->
   <div id="fb-content" class="fb-content hidden">
     <div class="fb-body">
-
-      <!-- 1. Score strip -->
       <div class="score-strip" id="score-strip">
         <div class="score-chip" id="sc-prep">
-          <span class="sc-icon">—</span>
+          <span class="sc-icon">&mdash;</span>
           <span class="sc-lbl">Voorzetsels</span>
-          <span class="sc-val" id="sc-prep-v">—</span>
+          <span class="sc-val" id="sc-prep-v">&mdash;</span>
         </div>
         <div class="score-chip" id="sc-dehet">
-          <span class="sc-icon">—</span>
+          <span class="sc-icon">&mdash;</span>
           <span class="sc-lbl">De/het</span>
-          <span class="sc-val" id="sc-dehet-v">—</span>
+          <span class="sc-val" id="sc-dehet-v">&mdash;</span>
         </div>
         <div class="score-chip" id="sc-words">
-          <span class="sc-icon">—</span>
+          <span class="sc-icon">&mdash;</span>
           <span class="sc-lbl">Doelwoorden</span>
-          <span class="sc-val" id="sc-words-v">—</span>
+          <span class="sc-val" id="sc-words-v">&mdash;</span>
         </div>
       </div>
 
-      <!-- 2. Annotated text -->
       <div class="fb-block" id="anno-block">
         <div class="fb-block-head">
-          <span>📝 Jouw tekst</span>
+          <span>&#x1F4DD; Jouw tekst</span>
           <span class="tap-hint-lbl" id="tap-hint" style="display:none">tik op rood voor uitleg</span>
         </div>
         <div class="anno-text" id="anno-text"></div>
       </div>
 
-      <!-- 3. Corrections list — one card per mistake -->
       <div class="corrections-block empty" id="corrections-block">
-        <div class="fb-block-head"><span>🔍 Verbeterpunten</span></div>
+        <div class="fb-block-head"><span>&#x1F50D; Verbeterpunten</span></div>
         <div id="corrections-list"></div>
       </div>
 
-      <!-- 4. Coach note -->
       <div class="coach-wrap">
-        <div class="coach-av">✍</div>
+        <div class="coach-av">&#x270D;</div>
         <div class="coach-bubble" id="coach-bubble"></div>
       </div>
-
     </div>
     <footer class="s-footer">
-      <button class="btn-primary" id="btn-done">Klaar voor vandaag ✓</button>
+      <button class="btn-primary" id="btn-done">Klaar voor vandaag &#x2713;</button>
     </footer>
   </div>
 
@@ -673,12 +598,10 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     LIBRARY SCREEN — All scenarios
-══════════════════════════════════════════ -->
+<!-- LIBRARY SCREEN -->
 <div id="screen-library" class="screen">
   <header class="s-header">
-    <button class="btn-icon" id="btn-back-library">←</button>
+    <button class="btn-icon" id="btn-back-library">&larr;</button>
     <div class="hd-center">
       <div style="text-align:center">
         <div class="wordmark">Pennet<em>je</em></div>
@@ -690,7 +613,7 @@
 
   <div class="lib-body">
     <div class="lib-intro">
-      <span class="lib-intro-icon">💡</span>
+      <span class="lib-intro-icon">&#x1F4A1;</span>
       <span>Tik op een opdracht om die te selecteren, dan kun je direct beginnen.</span>
     </div>
     <div id="lib-list"></div>
@@ -701,9 +624,7 @@
   </footer>
 </div>
 
-<!-- ══════════════════════════════════════════
-     BOTTOM SHEET (tapping inline annotation)
-══════════════════════════════════════════ -->
+<!-- BOTTOM SHEET -->
 <div id="sheet-bg" class="sheet-bg hidden"></div>
 <div id="bottom-sheet" class="sheet hidden">
   <div class="sheet-pip"></div>
@@ -716,16 +637,12 @@
       <div id="sh-fix-val" class="sh-fix-val"></div>
     </div>
   </div>
-  <button class="btn-primary" id="btn-begrepen">Begrepen ✓</button>
+  <button class="btn-primary" id="btn-begrepen">Begrepen &#x2713;</button>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCRIPT
-══════════════════════════════════════════ -->
 <script>
 // ── CONFIG ────────────────────────────────────────────────
-const GEMINI_KEY   = 'AIzaSyAMqd7RwD4Q-n7iHCJyBRNDS9iT5LZqa80';
-const GEMINI_MODEL = 'gemini-3-flash-preview';
+const GEMINI_MODEL = 'gemini-2.0-flash';
 
 // ── PROMPTS ──────────────────────────────────────────────
 const PROMPTS = [
@@ -758,7 +675,7 @@ const PROMPTS = [
     prompt_nl:'Beschrijf je favoriete plek in de stad waar je woont. Waarom houd je van die plek?',
     constraints:{ preposities:['houden van','denken aan'],
       woorden:[{woord:'buurt',meervoud:'buurten',artikel:'de'},
-               {woord:'café', meervoud:'cafés',  artikel:'het'}] } },
+               {woord:'caf\u00e9', meervoud:'caf\u00e9s',  artikel:'het'}] } },
   { id:'d7', dag:'Zondag',   format:'Jouw mening',
     prompt_nl:'Wat vind jij het moeilijkste aan leven in een ander land? Beschrijf een uitdaging.',
     constraints:{ preposities:['wennen aan','verlangen naar'],
@@ -766,33 +683,54 @@ const PROMPTS = [
                {woord:'verschil',meervoud:'verschillen',artikel:'het'}] } }
 ];
 
-// ── STORAGE ───────────────────────────────────────────────
+// ── STORAGE (safe for sandboxed environments) ─────────────
+const memStore = {};
+let hasLocalStorage = false;
+try {
+  localStorage.setItem('__test', '1');
+  localStorage.removeItem('__test');
+  hasLocalStorage = true;
+} catch(e) { /* sandboxed */ }
+
 const K = { streak:'p_streak', last:'p_last' };
 const S = {
-  get: k       => localStorage.getItem(k) || '',
-  set: (k,v)  => localStorage.setItem(k,v),
-  getStreak:  () => parseInt(S.get(K.streak)||'0', 10),
+  get(k) {
+    if (hasLocalStorage) {
+      try { return localStorage.getItem(k) || ''; } catch(e) { /* */ }
+    }
+    return memStore[k] || '';
+  },
+  set(k, v) {
+    memStore[k] = v;
+    if (hasLocalStorage) {
+      try { localStorage.setItem(k, v); } catch(e) { /* */ }
+    }
+  },
+  getStreak() { return parseInt(S.get(K.streak) || '0', 10); },
   tick() {
-    const today = new Date().toDateString();
-    const last  = S.get(K.last);
+    var today = new Date().toDateString();
+    var last  = S.get(K.last);
     if (last === today) return;
-    const yday = new Date(); yday.setDate(yday.getDate()-1);
-    S.set(K.streak, last===yday.toDateString() ? S.getStreak()+1 : 1);
+    var yday = new Date(); yday.setDate(yday.getDate()-1);
+    S.set(K.streak, last === yday.toDateString() ? S.getStreak()+1 : 1);
     S.set(K.last, today);
   }
 };
 
 // ── ROUTER ────────────────────────────────────────────────
-const showScreen = id => {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  ge(id).classList.add('active');
+var showScreen = function(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var el = document.getElementById(id);
+  if (el) el.classList.add('active');
   window.scrollTo(0,0);
 };
 
 // ── HELPERS ───────────────────────────────────────────────
-const ge  = id  => document.getElementById(id);
-const mk  = tag => document.createElement(tag);
-const esc = t   => t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+var ge  = function(id)  { return document.getElementById(id); };
+var mk  = function(tag) { return document.createElement(tag); };
+var esc = function(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+};
 
 function typeClass(type) {
   return {woordvorm:'cat-vorm',prepositie:'cat-prep',zinsbouw:'cat-zin',goed:'cat-goed'}[type]||'cat-goed';
@@ -801,94 +739,92 @@ function typeLabel(type) {
   return {woordvorm:'Woordvorm',prepositie:'Voorzetsel',zinsbouw:'Zinsbouw',goed:'Goed'}[type]||type;
 }
 
-// ── SEEDED SHUFFLE (mulberry32) ───────────────────────────
+// ── SEEDED SHUFFLE ────────────────────────────────────────
 function seededRng(seed) {
   return function() {
     seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   };
 }
 function shuffleWithSeed(arr, seed) {
-  const a = [...arr];
-  const rng = seededRng(seed);
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
+  var a = arr.slice();
+  var rng = seededRng(seed);
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(rng() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
   }
   return a;
 }
 function dateSeed() {
-  const d = new Date();
+  var d = new Date();
   return d.getFullYear() * 10000 + (d.getMonth()+1) * 100 + d.getDate();
 }
 
-// ── PROMPT ────────────────────────────────────────────────
-let prompt = null;
-const SHOW_INITIAL = 10;
-
-let selectedCard = null;
+// ── PROMPT SELECTION ──────────────────────────────────────
+var prompt = null;
+var SHOW_INITIAL = 10;
+var selectedCard = null;
 
 function selectPrompt(p, cardEl) {
   prompt = p;
-
-  // Deselect previous
   if (selectedCard) selectedCard.classList.remove('selected');
   selectedCard = cardEl;
   cardEl.classList.add('selected');
-
-  // Enable and update CTA
-  const btn = ge('btn-start');
+  var btn = ge('btn-start');
   btn.disabled = false;
-  btn.textContent = 'Begin met schrijven →';
+  btn.textContent = 'Begin met schrijven \u2192';
 }
 
 function goToCanvas() {
   if (!prompt) return;
-  const cc = ge('canvas-chips'); cc.innerHTML='';
-  [...prompt.constraints.preposities,
-   ...prompt.constraints.woorden.map(w=>`${w.artikel} ${w.woord}`)
-  ].forEach(l => { const c=mk('span'); c.className='chip chip-mini'; c.textContent=l; cc.appendChild(c); });
+  var cc = ge('canvas-chips'); cc.innerHTML='';
+  var labels = prompt.constraints.preposities.concat(
+    prompt.constraints.woorden.map(function(w){ return w.artikel + ' ' + w.woord; })
+  );
+  labels.forEach(function(l) {
+    var c = mk('span'); c.className='chip chip-mini'; c.textContent=l; cc.appendChild(c);
+  });
   ge('canvas-strip').textContent = prompt.prompt_nl;
   ge('writing-area').value='';
   ge('btn-submit').disabled=true;
   showScreen('screen-canvas');
-  setTimeout(() => ge('writing-area').focus(), 300);
+  setTimeout(function(){ ge('writing-area').focus(); }, 300);
 }
 
 function makePromptCard(p, isRecommended) {
-  const card = mk('div');
+  var card = mk('div');
   card.className = 'prompt-card' + (isRecommended ? ' recommended' : '');
   card.dataset.pid = p.id;
 
-  const inner = mk('div'); inner.className='card-inner';
+  var inner = mk('div'); inner.className='card-inner';
 
-  const fmt = mk('p'); fmt.className='card-format' + (isRecommended ? ' is-recommended' : '');
-  fmt.textContent = isRecommended ? '⭐ Aanbevolen voor vandaag' : p.format;
+  var fmt = mk('p'); fmt.className='card-format' + (isRecommended ? ' is-recommended' : '');
+  fmt.textContent = isRecommended ? '\u2B50 Aanbevolen voor vandaag' : p.format;
   inner.appendChild(fmt);
 
-  const q = mk('p'); q.className='card-q'; q.textContent=p.prompt_nl; inner.appendChild(q);
+  var q = mk('p'); q.className='card-q'; q.textContent=p.prompt_nl; inner.appendChild(q);
 
-  const cgP = mk('div'); cgP.className='cg';
-  const lP = mk('span'); lP.className='cg-label'; lP.textContent='Voorzetsels';
-  const chipsP = mk('div'); chipsP.className='chips';
-  p.constraints.preposities.forEach(t => { const c=mk('span'); c.className='chip chip-prep'; c.textContent=t; chipsP.appendChild(c); });
+  var cgP = mk('div'); cgP.className='cg';
+  var lP = mk('span'); lP.className='cg-label'; lP.textContent='Voorzetsels';
+  var chipsP = mk('div'); chipsP.className='chips';
+  p.constraints.preposities.forEach(function(t) { var c=mk('span'); c.className='chip chip-prep'; c.textContent=t; chipsP.appendChild(c); });
   cgP.append(lP, chipsP); inner.appendChild(cgP);
 
-  const cgW = mk('div'); cgW.className='cg';
-  const lW = mk('span'); lW.className='cg-label'; lW.textContent='Doelwoorden';
-  const chipsW = mk('div'); chipsW.className='chips';
-  p.constraints.woorden.map(w=>`${w.artikel} ${w.woord}`).forEach(t => { const c=mk('span'); c.className='chip chip-word'; c.textContent=t; chipsW.appendChild(c); });
+  var cgW = mk('div'); cgW.className='cg';
+  var lW = mk('span'); lW.className='cg-label'; lW.textContent='Doelwoorden';
+  var chipsW = mk('div'); chipsW.className='chips';
+  p.constraints.woorden.map(function(w){ return w.artikel + ' ' + w.woord; }).forEach(function(t) { var c=mk('span'); c.className='chip chip-word'; c.textContent=t; chipsW.appendChild(c); });
   cgW.append(lW, chipsW); inner.appendChild(cgW);
 
   card.appendChild(inner);
-  card.addEventListener('click', () => selectPrompt(p, card));
+  card.addEventListener('click', function() { selectPrompt(p, card); });
   return card;
 }
 
 // ── LIBRARY ───────────────────────────────────────────────
-const FORMAT_CLASS = {
+var FORMAT_CLASS = {
   'Vertel een verhaal': 'lib-format-verhaal',
   'Schrijf een gesprek': 'lib-format-gesprek',
   'Beschrijf een foto': 'lib-format-foto',
@@ -896,102 +832,91 @@ const FORMAT_CLASS = {
   'Vrij schrijven': 'lib-format-vrij',
 };
 
-let selectedLibCard = null;
-let libSelectedPrompt = null;
+var selectedLibCard = null;
+var libSelectedPrompt = null;
 
 function buildLibrary(shuffled) {
-  const list = ge('lib-list');
+  var list = ge('lib-list');
   list.innerHTML = '';
   list.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
 
-  PROMPTS.forEach(p => {
-    const isRecommended = p.id === shuffled[0].id;
+  PROMPTS.forEach(function(p) {
+    var isRecommended = p.id === shuffled[0].id;
 
-    const card = mk('div');
+    var card = mk('div');
     card.className = 'lib-card';
     card.dataset.pid = p.id;
 
-    const inner = mk('div'); inner.className = 'lib-card-inner';
+    var inner = mk('div'); inner.className = 'lib-card-inner';
 
-    // Top row: format badge + recommended label
-    const topRow = mk('div'); topRow.className = 'lib-card-top';
-    const badge = mk('span');
+    var topRow = mk('div'); topRow.className = 'lib-card-top';
+    var badge = mk('span');
     badge.className = 'lib-format-badge ' + (FORMAT_CLASS[p.format] || 'lib-format-vrij');
     badge.textContent = p.format;
     topRow.appendChild(badge);
     if (isRecommended) {
-      const rec = mk('span');
+      var rec = mk('span');
       rec.style.cssText = 'font-size:0.7rem;color:var(--brand);font-weight:600;';
-      rec.textContent = '⭐ Aanbevolen';
+      rec.textContent = '\u2B50 Aanbevolen';
       topRow.appendChild(rec);
     }
     inner.appendChild(topRow);
 
-    const q = mk('p'); q.className = 'lib-card-q'; q.textContent = p.prompt_nl;
+    var q = mk('p'); q.className = 'lib-card-q'; q.textContent = p.prompt_nl;
     inner.appendChild(q);
 
-    // Chips
-    const chips = mk('div'); chips.className = 'lib-chips';
-    p.constraints.preposities.forEach(t => {
-      const c = mk('span'); c.className = 'chip chip-prep';
+    var chips = mk('div'); chips.className = 'lib-chips';
+    p.constraints.preposities.forEach(function(t) {
+      var c = mk('span'); c.className = 'chip chip-prep';
       c.style.fontSize = '0.75rem'; c.textContent = t; chips.appendChild(c);
     });
-    p.constraints.woorden.forEach(w => {
-      const c = mk('span'); c.className = 'chip chip-word';
-      c.style.fontSize = '0.75rem'; c.textContent = `${w.artikel} ${w.woord}`; chips.appendChild(c);
+    p.constraints.woorden.forEach(function(w) {
+      var c = mk('span'); c.className = 'chip chip-word';
+      c.style.fontSize = '0.75rem'; c.textContent = w.artikel + ' ' + w.woord; chips.appendChild(c);
     });
     inner.appendChild(chips);
     card.appendChild(inner);
 
-    // Meta line at bottom of card (no button)
-    const meta = mk('div'); meta.className = 'lib-card-meta';
-    meta.textContent = `${p.constraints.preposities.length} voorzetsels · ${p.constraints.woorden.length} doelwoorden`;
+    var meta = mk('div'); meta.className = 'lib-card-meta';
+    meta.textContent = p.constraints.preposities.length + ' voorzetsels \u00B7 ' + p.constraints.woorden.length + ' doelwoorden';
     card.appendChild(meta);
 
-    // Tap to select
-    card.addEventListener('click', () => selectLibCard(p, card));
-
+    card.addEventListener('click', function() { selectLibCard(p, card); });
     list.appendChild(card);
   });
 
-  // Reflect current home selection in library on open
   syncLibrarySelection();
 }
 
 function selectLibCard(p, cardEl) {
-  // Deselect previous
   if (selectedLibCard) selectedLibCard.classList.remove('selected');
   selectedLibCard = cardEl;
   cardEl.classList.add('selected');
   libSelectedPrompt = p;
-
-  // Enable library CTA
-  const btn = ge('btn-lib-start');
+  var btn = ge('btn-lib-start');
   btn.disabled = false;
-  btn.textContent = 'Begin met schrijven →';
+  btn.textContent = 'Begin met schrijven \u2192';
 }
 
 function syncLibrarySelection() {
-  // When opening library, reflect whatever is currently selected on home
   if (!prompt) return;
-  const allCards = ge('lib-list').querySelectorAll('.lib-card');
-  allCards.forEach(cardEl => {
+  var allCards = ge('lib-list').querySelectorAll('.lib-card');
+  allCards.forEach(function(cardEl) {
     if (cardEl.dataset.pid === prompt.id) {
       cardEl.classList.add('selected');
       selectedLibCard = cardEl;
       libSelectedPrompt = prompt;
-      const btn = ge('btn-lib-start');
+      var btn = ge('btn-lib-start');
       btn.disabled = false;
-      btn.textContent = 'Begin met schrijven →';
+      btn.textContent = 'Begin met schrijven \u2192';
     }
   });
 }
 
 function goToCanvasFromLibrary() {
   if (!libSelectedPrompt) return;
-  // Sync selection back to home
-  const homeCards = ge('prompt-list').querySelectorAll('.prompt-card');
-  homeCards.forEach(cardEl => {
+  var homeCards = ge('prompt-list').querySelectorAll('.prompt-card');
+  homeCards.forEach(function(cardEl) {
     if (cardEl.dataset.pid === libSelectedPrompt.id) {
       selectPrompt(libSelectedPrompt, cardEl);
     }
@@ -1001,119 +926,96 @@ function goToCanvasFromLibrary() {
 
 function loadPrompt() {
   ge('home-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'});
-  ge('provider-hint').textContent = 'Feedback via: Gemini Flash';
+  ge('provider-hint').textContent = 'Feedback via: Anthropic Claude API';
 
-  const shuffled = shuffleWithSeed(PROMPTS, dateSeed());
-  const list = ge('prompt-list');
+  var shuffled = shuffleWithSeed(PROMPTS, dateSeed());
+  var list = ge('prompt-list');
   list.innerHTML='';
   list.style.cssText='display:flex;flex-direction:column;gap:14px;';
 
-  shuffled.forEach((p, i) => {
-    const card = makePromptCard(p, i === 0);
+  shuffled.forEach(function(p, i) {
+    var card = makePromptCard(p, i === 0);
     if (i >= SHOW_INITIAL) card.classList.add('hidden');
     list.appendChild(card);
-    // Auto-select the recommended card
     if (i === 0) selectPrompt(p, card);
   });
 
-  const btnAll = ge('btn-show-all');
+  var btnAll = ge('btn-show-all');
   if (shuffled.length > SHOW_INITIAL) {
     btnAll.style.display = 'block';
-    btnAll.addEventListener('click', () => {
-      list.querySelectorAll('.prompt-card.hidden').forEach(c => c.classList.remove('hidden'));
+    btnAll.addEventListener('click', function() {
+      list.querySelectorAll('.prompt-card.hidden').forEach(function(c) { c.classList.remove('hidden'); });
       btnAll.style.display = 'none';
     }, { once: true });
   }
 
-  // Build library with same shuffle (for recommended badge awareness)
   buildLibrary(shuffled);
-
 }
 
-
 // ── CANVAS ────────────────────────────────────────────────
-ge('writing-area').addEventListener('input', () => {
-  const t = ge('writing-area').value;
+ge('writing-area').addEventListener('input', function() {
+  var t = ge('writing-area').value;
   ge('btn-submit').disabled = t.trim().length < 10;
 });
 
 // ── SYSTEM PROMPT ─────────────────────────────────────────
 function buildSys(p) {
-  const preps = p.constraints.preposities.join(', ');
-  const words = p.constraints.woorden
-    .map(w=>`"${w.woord}" (${w.artikel}-woord, meervoud: "${w.meervoud}")`).join(', ');
-  return `Je bent Pennetje — een warme, directe NT2-taaldocent voor B1-leerders.
-
-Schrijfopdracht: "${p.prompt_nl}"
-Doelvoorzetsels: ${preps}
-Doelwoorden: ${words}
-
-Geef ALLEEN deze JSON terug, geen markdown, geen uitleg buiten JSON:
-{
-  "scorecard": {
-    "preposities_correct": <getal>,
-    "preposities_totaal": <getal>,
-    "dehet_fouten": <getal>,
-    "doelwoorden_correct": <getal>,
-    "doelwoorden_totaal": <getal>
-  },
-  "annotaties": [
-    {
-      "original": "<exacte tekst uit de oefening>",
-      "correct": "<correcte versie>",
-      "type": "woordvorm|prepositie|zinsbouw|goed",
-      "uitleg": "<één zin: wat is de regel in het Nederlands>",
-      "positief": false
-    }
-  ],
-  "coach_samenvatting": "<2-3 zinnen: één concreet compliment, één verbeterpunt, bemoedigend einde>"
+  var preps = p.constraints.preposities.join(', ');
+  var words = p.constraints.woorden
+    .map(function(w){ return '"' + w.woord + '" (' + w.artikel + '-woord, meervoud: "' + w.meervoud + '")'; }).join(', ');
+  return 'Je bent Pennetje \u2014 een warme, directe NT2-taaldocent voor B1-leerders.\n\n' +
+    'Schrijfopdracht: "' + p.prompt_nl + '"\n' +
+    'Doelvoorzetsels: ' + preps + '\n' +
+    'Doelwoorden: ' + words + '\n\n' +
+    'Geef ALLEEN deze JSON terug, geen markdown, geen uitleg buiten JSON:\n' +
+    '{\n' +
+    '  "scorecard": {\n' +
+    '    "preposities_correct": <getal>,\n' +
+    '    "preposities_totaal": <getal>,\n' +
+    '    "dehet_fouten": <getal>,\n' +
+    '    "doelwoorden_correct": <getal>,\n' +
+    '    "doelwoorden_totaal": <getal>\n' +
+    '  },\n' +
+    '  "annotaties": [\n' +
+    '    {\n' +
+    '      "original": "<exacte tekst uit de oefening>",\n' +
+    '      "correct": "<correcte versie>",\n' +
+    '      "type": "woordvorm|prepositie|zinsbouw|goed",\n' +
+    '      "uitleg": "<\u00e9\u00e9n zin: wat is de regel in het Nederlands>",\n' +
+    '      "positief": false\n' +
+    '    }\n' +
+    '  ],\n' +
+    '  "coach_samenvatting": "<2-3 zinnen: \u00e9\u00e9n concreet compliment, \u00e9\u00e9n verbeterpunt, bemoedigend einde>"\n' +
+    '}\n\n' +
+    'Regels:\n' +
+    '- Maximaal 4 annotaties totaal\n' +
+    '- "original" moet EXACT overeenkomen met tekst van de leerder\n' +
+    '- Wees nooit generiek \u2014 verwijs altijd naar wat de leerder echt schreef\n' +
+    '- "type" is altijd \u00e9\u00e9n van de vier genoemde waarden';
 }
 
-Regels:
-- Maximaal 4 annotaties totaal
-- "original" moet EXACT overeenkomen met tekst van de leerder
-- Wees nooit generiek — verwijs altijd naar wat de leerder echt schreef
-- "type" is altijd één van de vier genoemde waarden`;
-}
-
-// ── API CALL ──────────────────────────────────────────────
-async function callGemini(text) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
-  const res = await fetch(url, {
+// ── API CALL (Claude via Anthropic API) ───────────────────
+async function callLLM(text) {
+  var response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: {
-      'Content-Type':   'application/json',
-      'x-goog-api-key': GEMINI_KEY
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      system_instruction: { parts:[{ text: buildSys(prompt) }] },
-      contents: [{ role:'user', parts:[{ text }] }],
-      generationConfig: {
-        maxOutputTokens: 2000,
-        temperature:     0.3,
-        thinkingConfig:  { thinkingLevel: 'minimal' }
-      }
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: buildSys(prompt),
+      messages: [{ role: 'user', content: text }]
     })
   });
 
-  if (!res.ok) {
-    const errBody = await res.json().catch(() => ({}));
-    const msg = errBody?.error?.message || `HTTP ${res.status}`;
-    throw new Error(`Gemini API error: ${msg}`);
+  if (!response.ok) {
+    var errBody = {};
+    try { errBody = await response.json(); } catch(e) {}
+    throw new Error(errBody.error ? errBody.error.message : 'API error: ' + response.status);
   }
 
-  const d = await res.json();
-
-  // Gemini 3 thinking models return a 'thought' part before the actual text.
-  // Find the first part that is NOT a thought blob.
-  const parts = d.candidates?.[0]?.content?.parts || [];
-  const textPart = parts.find(p => p.text && !p.thought);
-  const raw = textPart?.text || '';
-
-  if (!raw) {
-    console.error('Gemini full response:', JSON.stringify(d, null, 2));
-    throw new Error('Empty response from Gemini');
-  }
+  var d = await response.json();
+  var raw = (d.content && d.content[0] && d.content[0].text) || '';
+  if (!raw) throw new Error('Empty response from API');
   return raw;
 }
 
@@ -1122,8 +1024,8 @@ function parseJSON(raw) {
 }
 
 // ── FEEDBACK FLOW ─────────────────────────────────────────
-let lastText = '';
-let lastAnnotaties = [];
+var lastText = '';
+var lastAnnotaties = [];
 
 async function doFeedback(text) {
   lastText = text;
@@ -1133,14 +1035,14 @@ async function doFeedback(text) {
   ge('fb-error').classList.add('hidden');
 
   try {
-    const raw = await callGemini(text);
-    const fb = parseJSON(raw);
+    var raw = await callLLM(text);
+    var fb = parseJSON(raw);
     renderFeedback(fb, text);
   } catch(e) {
     console.error('Feedback error:', e);
     ge('fb-loading').classList.add('hidden');
-    const errEl = ge('fb-error');
-    const errMsg = errEl.querySelector('.err-msg');
+    var errEl = ge('fb-error');
+    var errMsg = errEl.querySelector('.err-msg');
     if (errMsg) errMsg.textContent = e.message || 'Er ging iets mis. Probeer het opnieuw.';
     errEl.classList.remove('hidden');
   }
@@ -1148,20 +1050,20 @@ async function doFeedback(text) {
 
 // ── RENDER ────────────────────────────────────────────────
 function renderFeedback(fb, text) {
-  const sc = fb.scorecard;
+  var sc = fb.scorecard;
 
-  setScore('sc-prep',  'sc-prep-v',  `${sc.preposities_correct}/${sc.preposities_totaal}`,
+  setScore('sc-prep',  'sc-prep-v',  sc.preposities_correct + '/' + sc.preposities_totaal,
            sc.preposities_correct >= sc.preposities_totaal);
-  setScore('sc-dehet', 'sc-dehet-v', sc.dehet_fouten===0 ? '✓' : `${sc.dehet_fouten}×`,
+  setScore('sc-dehet', 'sc-dehet-v', sc.dehet_fouten===0 ? '\u2713' : sc.dehet_fouten + '\u00D7',
            sc.dehet_fouten===0);
-  setScore('sc-words', 'sc-words-v', `${sc.doelwoorden_correct}/${sc.doelwoorden_totaal}`,
+  setScore('sc-words', 'sc-words-v', sc.doelwoorden_correct + '/' + sc.doelwoorden_totaal,
            sc.doelwoorden_correct >= sc.doelwoorden_totaal);
 
-  const annos = fb.annotaties || [];
+  var annos = fb.annotaties || [];
   lastAnnotaties = annos;
   renderAnno(text, annos);
 
-  const hasErrors = annos.some(a => !a.positief);
+  var hasErrors = annos.some(function(a) { return !a.positief; });
   ge('tap-hint').style.display = hasErrors ? 'inline' : 'none';
 
   renderCorrections(annos);
@@ -1172,40 +1074,40 @@ function renderFeedback(fb, text) {
 }
 
 function setScore(chipId, valId, val, isGood) {
-  const chip = ge(chipId);
+  var chip = ge(chipId);
   chip.classList.toggle('good', isGood);
   chip.classList.toggle('miss', !isGood);
-  chip.querySelector('.sc-icon').textContent = isGood ? '✓' : '✗';
+  chip.querySelector('.sc-icon').textContent = isGood ? '\u2713' : '\u2717';
   ge(valId).textContent = val;
 }
 
 function renderAnno(text, annos) {
-  const spans = [];
-  annos.forEach((a,i) => {
-    const pos = text.indexOf(a.original);
-    if (pos !== -1) spans.push({pos, len:a.original.length, a, i});
+  var spans = [];
+  annos.forEach(function(a, i) {
+    var pos = text.indexOf(a.original);
+    if (pos !== -1) spans.push({pos:pos, len:a.original.length, a:a, i:i});
   });
-  spans.sort((a,b) => a.pos-b.pos);
+  spans.sort(function(a,b) { return a.pos - b.pos; });
 
-  let html='', cursor=0;
-  spans.forEach(({pos,len,a,i}) => {
-    if (pos < cursor) return;
-    if (pos > cursor) html += esc(text.slice(cursor,pos));
-    html += `<span class="${a.positief?'a-ok':'a-err'}" data-i="${i}">${esc(a.original)}</span>`;
-    cursor = pos+len;
+  var html='', cursor=0;
+  spans.forEach(function(s) {
+    if (s.pos < cursor) return;
+    if (s.pos > cursor) html += esc(text.slice(cursor, s.pos));
+    html += '<span class="' + (s.a.positief ? 'a-ok' : 'a-err') + '" data-i="' + s.i + '">' + esc(s.a.original) + '</span>';
+    cursor = s.pos + s.len;
   });
   if (cursor < text.length) html += esc(text.slice(cursor));
   ge('anno-text').innerHTML = html;
-  ge('anno-text').querySelectorAll('.a-err').forEach(el => {
-    el.addEventListener('click', () => openSheet(lastAnnotaties[+el.dataset.i]));
+  ge('anno-text').querySelectorAll('.a-err').forEach(function(el) {
+    el.addEventListener('click', function() { openSheet(lastAnnotaties[+el.dataset.i]); });
   });
 }
 
 function renderCorrections(annos) {
-  const errors = annos.filter(a => !a.positief);
-  const goods  = annos.filter(a =>  a.positief);
-  const block  = ge('corrections-block');
-  const list   = ge('corrections-list');
+  var errors = annos.filter(function(a) { return !a.positief; });
+  var goods  = annos.filter(function(a) { return  a.positief; });
+  var block  = ge('corrections-block');
+  var list   = ge('corrections-list');
   list.innerHTML = '';
 
   if (!errors.length && !goods.length) {
@@ -1213,34 +1115,34 @@ function renderCorrections(annos) {
   }
   block.classList.remove('empty');
 
-  errors.forEach(a => {
-    const item = mk('div'); item.className = 'correction';
-    const top = mk('div'); top.className = 'corr-row-top';
-    const badge = mk('span');
-    badge.className = `cat-badge ${typeClass(a.type)}`;
+  errors.forEach(function(a) {
+    var item = mk('div'); item.className = 'correction';
+    var top = mk('div'); top.className = 'corr-row-top';
+    var badge = mk('span');
+    badge.className = 'cat-badge ' + typeClass(a.type);
     badge.textContent = typeLabel(a.type);
-    const wrong = mk('div'); wrong.className = 'corr-wrong';
-    wrong.textContent = `"${a.original}"`;
+    var wrong = mk('div'); wrong.className = 'corr-wrong';
+    wrong.textContent = '\u201C' + a.original + '\u201D';
     top.append(badge, wrong);
-    const fix = mk('div'); fix.className = 'corr-fix';
-    const arrow = mk('span'); arrow.className='fix-arrow'; arrow.textContent='→';
-    const val   = mk('span'); val.className  ='fix-val';   val.textContent = a.correct;
+    var fix = mk('div'); fix.className = 'corr-fix';
+    var arrow = mk('span'); arrow.className='fix-arrow'; arrow.textContent='\u2192';
+    var val   = mk('span'); val.className  ='fix-val';   val.textContent = a.correct;
     fix.append(arrow, val);
-    const rule = mk('div'); rule.className='corr-rule'; rule.textContent = a.uitleg;
+    var rule = mk('div'); rule.className='corr-rule'; rule.textContent = a.uitleg;
     item.append(top, fix, rule);
     list.appendChild(item);
   });
 
   if (goods.length) {
-    goods.forEach(a => {
-      const item = mk('div'); item.className = 'correction';
-      const top  = mk('div'); top.className  = 'corr-row-top';
-      const badge = mk('span');
+    goods.forEach(function(a) {
+      var item = mk('div'); item.className = 'correction';
+      var top  = mk('div'); top.className  = 'corr-row-top';
+      var badge = mk('span');
       badge.className = 'cat-badge cat-goed'; badge.textContent='Goed gedaan';
-      const txt = mk('div'); txt.className = 'corr-wrong is-ok';
-      txt.textContent = `"${a.original}"`;
+      var txt = mk('div'); txt.className = 'corr-wrong is-ok';
+      txt.textContent = '\u201C' + a.original + '\u201D';
       top.append(badge, txt);
-      const rule = mk('div'); rule.className='corr-rule'; rule.textContent=a.uitleg;
+      var rule = mk('div'); rule.className='corr-rule'; rule.textContent=a.uitleg;
       item.append(top, rule);
       list.appendChild(item);
     });
@@ -1249,19 +1151,19 @@ function renderCorrections(annos) {
 
 // ── BOTTOM SHEET ──────────────────────────────────────────
 function openSheet(a) {
-  const badge = ge('sh-badge');
+  var badge = ge('sh-badge');
   badge.textContent = typeLabel(a.type);
-  badge.className   = `sh-badge ${typeClass(a.type)}`;
-  ge('sh-wrong').textContent = `"${a.original}"`;
+  badge.className   = 'sh-badge ' + typeClass(a.type);
+  ge('sh-wrong').textContent = '\u201C' + a.original + '\u201D';
   ge('sh-rule').textContent  = a.uitleg;
-  const fix = ge('sh-fix');
+  var fix = ge('sh-fix');
   if (!a.positief && a.correct !== a.original) {
     ge('sh-fix-val').textContent = a.correct;
     fix.classList.remove('hidden');
   } else { fix.classList.add('hidden'); }
   ge('sheet-bg').classList.remove('hidden');
   ge('bottom-sheet').classList.remove('hidden');
-  requestAnimationFrame(() => {
+  requestAnimationFrame(function() {
     ge('sheet-bg').classList.add('on');
     ge('bottom-sheet').classList.add('on');
   });
@@ -1269,18 +1171,18 @@ function openSheet(a) {
 function closeSheet() {
   ge('sheet-bg').classList.remove('on');
   ge('bottom-sheet').classList.remove('on');
-  setTimeout(() => {
+  setTimeout(function() {
     ge('sheet-bg').classList.add('hidden');
     ge('bottom-sheet').classList.add('hidden');
   }, 360);
 }
 ge('sheet-bg').addEventListener('click', closeSheet);
 ge('btn-begrepen').addEventListener('click', closeSheet);
+
 // ── NAV ───────────────────────────────────────────────────
 ge('btn-start').addEventListener('click', goToCanvas);
-ge('btn-browse-all').addEventListener('click', () => {
+ge('btn-browse-all').addEventListener('click', function() {
   showScreen('screen-library');
-  // Reset library CTA state, then sync selection
   ge('btn-lib-start').disabled = true;
   ge('btn-lib-start').textContent = 'Kies een opdracht om te beginnen';
   selectedLibCard = null;
@@ -1288,15 +1190,15 @@ ge('btn-browse-all').addEventListener('click', () => {
   if (ge('lib-list').children.length > 0) syncLibrarySelection();
 });
 ge('btn-lib-start').addEventListener('click', goToCanvasFromLibrary);
-ge('btn-back-library').addEventListener('click', () => showScreen('screen-home'));
-ge('btn-back-canvas').addEventListener('click', () => showScreen('screen-home'));
-ge('btn-back-fb').addEventListener('click',     () => showScreen('screen-canvas'));
-ge('btn-submit').addEventListener('click', () => {
-  const t = ge('writing-area').value.trim();
+ge('btn-back-library').addEventListener('click', function() { showScreen('screen-home'); });
+ge('btn-back-canvas').addEventListener('click', function() { showScreen('screen-home'); });
+ge('btn-back-fb').addEventListener('click', function() { showScreen('screen-canvas'); });
+ge('btn-submit').addEventListener('click', function() {
+  var t = ge('writing-area').value.trim();
   if (t) doFeedback(t);
 });
-ge('btn-retry').addEventListener('click', () => { if (lastText) doFeedback(lastText); });
-ge('btn-done').addEventListener('click', () => {
+ge('btn-retry').addEventListener('click', function() { if (lastText) doFeedback(lastText); });
+ge('btn-done').addEventListener('click', function() {
   S.tick();
   ge('streak-count').textContent = S.getStreak();
   showScreen('screen-home');
@@ -1304,7 +1206,11 @@ ge('btn-done').addEventListener('click', () => {
 
 // ── INIT ─────────────────────────────────────────────────
 function init() {
-  ge('streak-count').textContent = S.getStreak();
+  try {
+    ge('streak-count').textContent = S.getStreak();
+  } catch(e) {
+    ge('streak-count').textContent = '0';
+  }
   loadPrompt();
   showScreen('screen-home');
 }
