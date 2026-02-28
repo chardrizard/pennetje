@@ -73,5 +73,455 @@
     },
     "min_zinnen": 5,
     "max_zinnen": 8
+  },
+  {
+    "id": "dag-008",
+    "dag": "Maandag",
+    "format": "Vertel een verhaal",
+    "prompt_nl": "Denk aan je eerste dag in Nederland. Wat was het moeilijkste moment?",
+    "constraints": {
+      "preposities": ["herinneren aan", "praten over"],
+      "woorden": [
+        { "woord": "dag", "correct_meervoud": "dagen", "artikel": "de" },
+        { "woord": "station", "correct_meervoud": "stations", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-009",
+    "dag": "Dinsdag",
+    "format": "Schrijf een gesprek",
+    "prompt_nl": "Schrijf een gesprek met je buren over het afval in jullie straat.",
+    "constraints": {
+      "preposities": ["vragen aan", "klagen over"],
+      "woorden": [
+        { "woord": "buur", "correct_meervoud": "buren", "artikel": "de" },
+        { "woord": "huis", "correct_meervoud": "huizen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-010",
+    "dag": "Woensdag",
+    "format": "Beschrijf een foto",
+    "prompt_nl": "Je ziet een foto van een typisch Nederlands huishouden. Beschrijf wat je ziet en wat opvalt.",
+    "constraints": {
+      "preposities": ["kijken naar", "letten op"],
+      "woorden": [
+        { "woord": "huishouden", "correct_meervoud": "huishoudens", "artikel": "het" },
+        { "woord": "keuken", "correct_meervoud": "keukens", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-011",
+    "dag": "Donderdag",
+    "format": "Jouw mening",
+    "prompt_nl": "Vind jij het makkelijk of moeilijk om nieuwe vrienden te maken in Nederland? Waarom?",
+    "constraints": {
+      "preposities": ["moeilijk zijn voor", "verlangen naar"],
+      "woorden": [
+        { "woord": "vriendschap", "correct_meervoud": "vriendschappen", "artikel": "de" },
+        { "woord": "contact", "correct_meervoud": "contacten", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-012",
+    "dag": "Vrijdag",
+    "format": "Vrij schrijven",
+    "prompt_nl": "Schrijf over een gewoonte die je hebt meegenomen vanuit je thuisland.",
+    "constraints": {
+      "preposities": ["denken aan", "wennen aan"],
+      "woorden": [
+        { "woord": "gewoonte", "correct_meervoud": "gewoonten", "artikel": "de" },
+        { "woord": "verschil", "correct_meervoud": "verschillen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-013",
+    "dag": "Zaterdag",
+    "format": "Vertel een verhaal",
+    "prompt_nl": "Vertel over een keer dat je iets totaal nieuws at in Nederland. Hoe was dat?",
+    "constraints": {
+      "preposities": ["houden van", "genieten van"],
+      "woorden": [
+        { "woord": "gerecht", "correct_meervoud": "gerechten", "artikel": "het" },
+        { "woord": "smaak", "correct_meervoud": "smaken", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-014",
+    "dag": "Zondag",
+    "format": "Vergelijk twee dingen",
+    "prompt_nl": "Vergelijk het openbaar vervoer in Nederland met dat in jouw thuisland.",
+    "constraints": {
+      "preposities": ["reizen met", "dromen van"],
+      "woorden": [
+        { "woord": "vervoer", "correct_meervoud": "transporten", "artikel": "het" },
+        { "woord": "trein", "correct_meervoud": "treinen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-015",
+    "dag": "Maandag",
+    "format": "Schrijf een brief",
+    "prompt_nl": "Schrijf een korte e-mail aan je verhuurder. Je hebt een probleem met de verwarming.",
+    "constraints": {
+      "preposities": ["klagen over", "reageren op"],
+      "woorden": [
+        { "woord": "verwarming", "correct_meervoud": "verwarmingen", "artikel": "de" },
+        { "woord": "probleem", "correct_meervoud": "problemen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-016",
+    "dag": "Dinsdag",
+    "format": "Jouw mening",
+    "prompt_nl": "Wat is jouw mening over de Nederlandse directheid? Is dat een voordeel of nadeel?",
+    "constraints": {
+      "preposities": ["omgaan met", "nadenken over"],
+      "woorden": [
+        { "woord": "voordeel", "correct_meervoud": "voordelen", "artikel": "het" },
+        { "woord": "nadeel", "correct_meervoud": "nadelen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-017",
+    "dag": "Woensdag",
+    "format": "Beschrijf een foto",
+    "prompt_nl": "Je ziet een foto van een drukke Nederlandse supermarkt op zaterdag. Wat zie jij?",
+    "constraints": {
+      "preposities": ["staan bij", "betalen voor"],
+      "woorden": [
+        { "woord": "rij", "correct_meervoud": "rijen", "artikel": "de" },
+        { "woord": "schap", "correct_meervoud": "schappen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-018",
+    "dag": "Donderdag",
+    "format": "Vertel een verhaal",
+    "prompt_nl": "Beschrijf een moment waarop je iets begreep van de Nederlandse cultuur dat je eerst niet snapte.",
+    "constraints": {
+      "preposities": ["lachen om", "leren van"],
+      "woorden": [
+        { "woord": "moment", "correct_meervoud": "momenten", "artikel": "het" },
+        { "woord": "grap", "correct_meervoud": "grappen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-019",
+    "dag": "Vrijdag",
+    "format": "Vrij schrijven",
+    "prompt_nl": "Schrijf over iets wat je heel graag wil leren, naast de Nederlandse taal.",
+    "constraints": {
+      "preposities": ["zin hebben in", "goed zijn in"],
+      "woorden": [
+        { "woord": "talent", "correct_meervoud": "talenten", "artikel": "het" },
+        { "woord": "cursus", "correct_meervoud": "cursussen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-020",
+    "dag": "Zaterdag",
+    "format": "Vergelijk twee dingen",
+    "prompt_nl": "Vergelijk het fietsen in Nederland met het verkeer in jouw land van herkomst.",
+    "constraints": {
+      "preposities": ["letten op", "bang zijn voor"],
+      "woorden": [
+        { "woord": "fietspad", "correct_meervoud": "fietspaden", "artikel": "het" },
+        { "woord": "straat", "correct_meervoud": "straten", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-021",
+    "dag": "Zondag",
+    "format": "Schrijf een gesprek",
+    "prompt_nl": "Schrijf een gesprek met een collega. Jullie praten over de vakantieplannen.",
+    "constraints": {
+      "preposities": ["vertellen over", "kijken naar"],
+      "woorden": [
+        { "woord": "strand", "correct_meervoud": "stranden", "artikel": "het" },
+        { "woord": "reis", "correct_meervoud": "reizen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-022",
+    "dag": "Maandag",
+    "format": "Vertel een verhaal",
+    "prompt_nl": "Beschrijf een keer dat je de trein of de bus miste in Nederland. Wat gebeurde er?",
+    "constraints": {
+      "preposities": ["wachten op", "balen van"],
+      "woorden": [
+        { "woord": "perron", "correct_meervoud": "perrons", "artikel": "het" },
+        { "woord": "vertraging", "correct_meervoud": "vertragingen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-023",
+    "dag": "Dinsdag",
+    "format": "Schrijf een brief",
+    "prompt_nl": "Schrijf een e-mail naar de gemeente. Je wilt je adres wijzigen na een verhuizing.",
+    "constraints": {
+      "preposities": ["vragen om", "sturen naar"],
+      "woorden": [
+        { "woord": "formulier", "correct_meervoud": "formulieren", "artikel": "het" },
+        { "woord": "brief", "correct_meervoud": "brieven", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-024",
+    "dag": "Woensdag",
+    "format": "Beschrijf een foto",
+    "prompt_nl": "Je ziet een foto van een Nederlands kantoor tijdens de lunchpauze met broodjes kaas.",
+    "constraints": {
+      "preposities": ["zitten aan", "praten met"],
+      "woorden": [
+        { "woord": "pauze", "correct_meervoud": "pauzes", "artikel": "de" },
+        { "woord": "broodje", "correct_meervoud": "broodjes", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-025",
+    "dag": "Donderdag",
+    "format": "Jouw mening",
+    "prompt_nl": "Vind je dat alle winkels op zondag open moeten zijn in Nederland? Waarom wel of niet?",
+    "constraints": {
+      "preposities": ["nadenken over", "het eens zijn met"],
+      "woorden": [
+        { "woord": "centrum", "correct_meervoud": "centra", "artikel": "het" },
+        { "woord": "winkel", "correct_meervoud": "winkels", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-026",
+    "dag": "Vrijdag",
+    "format": "Vrij schrijven",
+    "prompt_nl": "Wat is het mooiste of grappigste Nederlandse woord dat je tot nu toe kent?",
+    "constraints": {
+      "preposities": ["genieten van", "klinken als"],
+      "woorden": [
+        { "woord": "woord", "correct_meervoud": "woorden", "artikel": "het" },
+        { "woord": "klank", "correct_meervoud": "klanken", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-027",
+    "dag": "Zaterdag",
+    "format": "Vergelijk twee dingen",
+    "prompt_nl": "Vergelijk het weer in Nederland tijdens de winter met de winter in jouw geboorteland.",
+    "constraints": {
+      "preposities": ["rekenen op", "wennen aan"],
+      "woorden": [
+        { "woord": "jas", "correct_meervoud": "jassen", "artikel": "de" },
+        { "woord": "seizoen", "correct_meervoud": "seizoenen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-028",
+    "dag": "Zondag",
+    "format": "Schrijf een gesprek",
+    "prompt_nl": "Schrijf een WhatsApp-gesprek met de fietsenmaker. Je fiets is gisteren kapot gegaan.",
+    "constraints": {
+      "preposities": ["afspreken met", "geloven in"],
+      "woorden": [
+        { "woord": "band", "correct_meervoud": "banden", "artikel": "de" },
+        { "woord": "stuur", "correct_meervoud": "sturen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-029",
+    "dag": "Maandag",
+    "format": "Vertel een verhaal",
+    "prompt_nl": "Beschrijf de eerste keer dat je fietste in een grote, drukke Nederlandse stad.",
+    "constraints": {
+      "preposities": ["schrikken van", "meedoen aan"],
+      "woorden": [
+        { "woord": "fiets", "correct_meervoud": "fietsen", "artikel": "de" },
+        { "woord": "kruispunt", "correct_meervoud": "kruispunten", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-030",
+    "dag": "Dinsdag",
+    "format": "Schrijf een brief",
+    "prompt_nl": "Schrijf een bericht naar je docent Nederlands om te vertellen dat je vandaag niet naar de les kunt komen.",
+    "constraints": {
+      "preposities": ["hopen op", "beginen aan"],
+      "woorden": [
+        { "woord": "les", "correct_meervoud": "lessen", "artikel": "de" },
+        { "woord": "boek", "correct_meervoud": "boeken", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-031",
+    "dag": "Woensdag",
+    "format": "Beschrijf een foto",
+    "prompt_nl": "Je ziet een foto van Koningsdag: iedereen is in het oranje gekleed op straat.",
+    "constraints": {
+      "preposities": ["genieten van", "kijken naar"],
+      "woorden": [
+        { "woord": "feest", "correct_meervoud": "feesten", "artikel": "het" },
+        { "woord": "kleur", "correct_meervoud": "kleuren", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-032",
+    "dag": "Donderdag",
+    "format": "Jouw mening",
+    "prompt_nl": "Vind jij dat Nederlanders hun agenda te vol plannen?",
+    "constraints": {
+      "preposities": ["tijd hebben voor", "druk zijn met"],
+      "woorden": [
+        { "woord": "agenda", "correct_meervoud": "agenda's", "artikel": "de" },
+        { "woord": "weekend", "correct_meervoud": "weekenden", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-033",
+    "dag": "Vrijdag",
+    "format": "Vrij schrijven",
+    "prompt_nl": "Schrijf over een taalfout die je maakte in het Nederlands waar je later hard om kon lachen.",
+    "constraints": {
+      "preposities": ["zich schamen voor", "leren van"],
+      "woorden": [
+        { "woord": "fout", "correct_meervoud": "fouten", "artikel": "de" },
+        { "woord": "gesprek", "correct_meervoud": "gesprekken", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-034",
+    "dag": "Zaterdag",
+    "format": "Vergelijk twee dingen",
+    "prompt_nl": "Vergelijk de supermarkt in Nederland met de lokale markt in jouw geboorteland.",
+    "constraints": {
+      "preposities": ["zoeken naar", "betalen voor"],
+      "woorden": [
+        { "woord": "product", "correct_meervoud": "producten", "artikel": "het" },
+        { "woord": "prijs", "correct_meervoud": "prijzen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-035",
+    "dag": "Zondag",
+    "format": "Schrijf een gesprek",
+    "prompt_nl": "Je belt met een helpdesk omdat het internet in je nieuwe huis het niet doet.",
+    "constraints": {
+      "preposities": ["boos zijn over", "wachten op"],
+      "woorden": [
+        { "woord": "verbinding", "correct_meervoud": "verbindingen", "artikel": "de" },
+        { "woord": "modem", "correct_meervoud": "modems", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-036",
+    "dag": "Maandag",
+    "format": "Vertel een verhaal",
+    "prompt_nl": "Beschrijf een moment dat een onbekende Nederlander jou op straat hielp.",
+    "constraints": {
+      "preposities": ["blij zijn met", "bedanken voor"],
+      "woorden": [
+        { "woord": "richting", "correct_meervoud": "richtingen", "artikel": "de" },
+        { "woord": "plein", "correct_meervoud": "pleinen", "artikel": "het" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
+  },
+  {
+    "id": "dag-037",
+    "dag": "Dinsdag",
+    "format": "Schrijf een brief",
+    "prompt_nl": "Schrijf een mail naar je sportschool om je abonnement definitief op te zeggen.",
+    "constraints": {
+      "preposities": ["stoppen met", "spijt hebben van"],
+      "woorden": [
+        { "woord": "abonnement", "correct_meervoud": "abonnementen", "artikel": "het" },
+        { "woord": "reden", "correct_meervoud": "redenen", "artikel": "de" }
+      ]
+    },
+    "min_zinnen": 5,
+    "max_zinnen": 8
   }
 ]
