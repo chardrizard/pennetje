@@ -218,6 +218,85 @@
 
     .provider-hint { font-size: 0.75rem; color: var(--t4); text-align: center; }
 
+    /* ── Browse-all link ── */
+    .browse-link {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-size: 0.875rem; color: var(--t3); padding: 10px 0;
+      cursor: pointer; background: none; border: none; width: 100%;
+      font-family: var(--font); text-decoration: none;
+      transition: color 140ms;
+    }
+    .browse-link:active { color: var(--brand); }
+    .browse-link-icon {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--paper-2); display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--t3); flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       LIBRARY SCREEN
+    ═══════════════════════════════════════════ */
+    .lib-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 20px; }
+
+    .lib-intro {
+      background: var(--paper-1); border: 1px solid var(--border-light);
+      border-radius: var(--r-md); padding: 12px 14px;
+      font-size: 0.875rem; line-height: 1.55; color: var(--t3);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .lib-intro-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+    .lib-group-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--t4);
+      padding: 0 2px;
+    }
+
+    .lib-group { display: flex; flex-direction: column; gap: 10px; }
+
+    /* Library row card */
+    .lib-card {
+      background: #fff; border: 1.5px solid var(--border-light);
+      border-radius: var(--r-lg); overflow: hidden;
+    }
+    .lib-card-inner { padding: 14px 16px 12px; }
+    .lib-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .lib-format-badge {
+      font-size: 0.5rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: var(--r-full);
+      border: 1px solid transparent; flex-shrink: 0;
+    }
+    .lib-format-verhaal { background: #fdf0e0; color: #7a4a0e; border-color: #e8c88a; }
+    .lib-format-gesprek { background: #eef5f0; color: #1e5a38; border-color: #aed4c0; }
+    .lib-format-foto    { background: #f0f0fd; color: #2d2d78; border-color: #b0b0e8; }
+    .lib-format-mening  { background: #f5eef8; color: #5a2d78; border-color: #d4aee8; }
+    .lib-format-vrij    { background: var(--note-light); color: var(--note); border-color: var(--note-border); }
+
+    .lib-card-q {
+      font-size: 0.9375rem; line-height: 1.6; font-weight: 500;
+      color: var(--t1); margin-bottom: 10px;
+    }
+    .lib-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+
+    .lib-card-footer {
+      border-top: 1px solid var(--border-light);
+      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .lib-card-meta { font-size: 0.75rem; color: var(--t4); }
+
+    .btn-select {
+      font-size: 0.8125rem; font-weight: 600; color: var(--brand);
+      background: var(--brand-light); border: 1px solid var(--brand-mid);
+      border-radius: var(--r-full); padding: 5px 14px;
+      font-family: var(--font); cursor: pointer;
+      transition: background 130ms, transform 100ms;
+    }
+    .btn-select:active { background: var(--brand-mid); transform: scale(0.97); }
+    .btn-select.is-active {
+      background: var(--brand); color: #fff; border-color: var(--brand);
+    }
+
     /* ═══════════════════════════════════════════
        CANVAS SCREEN
     ═══════════════════════════════════════════ */
@@ -484,6 +563,12 @@
 
     <div id="prompt-list"></div>
 
+    <button class="browse-link" id="btn-browse-all">
+      <span class="browse-link-icon">📚</span>
+      Bekijk alle opdrachten
+      <span style="color:var(--t4);font-size:0.75rem">→</span>
+    </button>
+
     <button class="btn-ghost" id="btn-show-all" style="display:none;margin-top:2px">Toon alle opdrachten ↓</button>
 
     <div class="tip-bar">
@@ -593,6 +678,30 @@
   <div id="fb-error" class="fb-error hidden">
     <p class="err-msg">Er ging iets mis. Probeer het opnieuw.</p>
     <button class="btn-ghost" id="btn-retry" style="max-width:220px">Opnieuw proberen</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LIBRARY SCREEN — All scenarios
+══════════════════════════════════════════ -->
+<div id="screen-library" class="screen">
+  <header class="s-header">
+    <button class="btn-icon" id="btn-back-library">←</button>
+    <div class="hd-center">
+      <div style="text-align:center">
+        <div class="wordmark">Pennet<em>je</em></div>
+        <div style="font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--t4);margin-top:1px">Alle opdrachten</div>
+      </div>
+    </div>
+    <div class="hd-side"></div>
+  </header>
+
+  <div class="lib-body">
+    <div class="lib-intro">
+      <span class="lib-intro-icon">💡</span>
+      <span>Kies een opdracht om vandaag mee te oefenen. De <strong>aanbevolen</strong> opdracht staat bovenaan de homepagina.</span>
+    </div>
+    <div id="lib-list"></div>
   </div>
 </div>
 
@@ -755,6 +864,7 @@ function goToCanvas() {
 function makePromptCard(p, isRecommended) {
   const card = mk('div');
   card.className = 'prompt-card' + (isRecommended ? ' recommended' : '');
+  card.dataset.pid = p.id;
 
   const inner = mk('div'); inner.className='card-inner';
 
@@ -781,7 +891,95 @@ function makePromptCard(p, isRecommended) {
   return card;
 }
 
-function loadPrompt() {
+// ── LIBRARY ───────────────────────────────────────────────
+const FORMAT_CLASS = {
+  'Vertel een verhaal': 'lib-format-verhaal',
+  'Schrijf een gesprek': 'lib-format-gesprek',
+  'Beschrijf een foto': 'lib-format-foto',
+  'Jouw mening': 'lib-format-mening',
+  'Vrij schrijven': 'lib-format-vrij',
+};
+
+function buildLibrary(shuffled) {
+  const list = ge('lib-list');
+  list.innerHTML = '';
+  list.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
+
+  PROMPTS.forEach((p, idx) => {
+    const isRecommended = p.id === shuffled[0].id;
+
+    const card = mk('div'); card.className = 'lib-card';
+    card.dataset.pid = p.id;
+
+    const inner = mk('div'); inner.className = 'lib-card-inner';
+
+    // Top row: format badge + recommended star
+    const topRow = mk('div'); topRow.className = 'lib-card-top';
+    const badge = mk('span');
+    badge.className = 'lib-format-badge ' + (FORMAT_CLASS[p.format] || 'lib-format-vrij');
+    badge.textContent = p.format;
+    topRow.appendChild(badge);
+    if (isRecommended) {
+      const rec = mk('span');
+      rec.style.cssText = 'font-size:0.7rem;color:var(--brand);font-weight:600;';
+      rec.textContent = '⭐ Aanbevolen';
+      topRow.appendChild(rec);
+    }
+    inner.appendChild(topRow);
+
+    const q = mk('p'); q.className = 'lib-card-q'; q.textContent = p.prompt_nl;
+    inner.appendChild(q);
+
+    // Chips
+    const chips = mk('div'); chips.className = 'lib-chips';
+    p.constraints.preposities.forEach(t => {
+      const c = mk('span'); c.className = 'chip chip-prep'; c.style.fontSize='0.75rem'; c.textContent = t; chips.appendChild(c);
+    });
+    p.constraints.woorden.forEach(w => {
+      const c = mk('span'); c.className = 'chip chip-word'; c.style.fontSize='0.75rem'; c.textContent = `${w.artikel} ${w.woord}`; chips.appendChild(c);
+    });
+    inner.appendChild(chips);
+    card.appendChild(inner);
+
+    // Footer: meta + select button
+    const footer = mk('div'); footer.className = 'lib-card-footer';
+    const meta = mk('span'); meta.className = 'lib-card-meta';
+    meta.textContent = `${p.constraints.preposities.length} voorzetsels · ${p.constraints.woorden.length} doelwoorden`;
+    const btn = mk('button');
+    btn.className = 'btn-select' + (isRecommended ? ' is-active' : '');
+    btn.textContent = isRecommended ? '✓ Geselecteerd' : 'Gebruik deze →';
+    btn.dataset.pid = p.id;
+    btn.addEventListener('click', () => selectFromLibrary(p));
+    footer.append(meta, btn);
+    card.appendChild(footer);
+
+    list.appendChild(card);
+  });
+}
+
+function selectFromLibrary(p) {
+  // Navigate back to home, then select the matching card
+  showScreen('screen-home');
+  // Find the matching home card and select it
+  const allHomeCards = ge('prompt-list').querySelectorAll('.prompt-card');
+  allHomeCards.forEach(cardEl => {
+    if (cardEl.dataset.pid === p.id) {
+      selectPrompt(p, cardEl);
+      // Scroll the card into view smoothly
+      setTimeout(() => cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' }), 120);
+    }
+  });
+  // Update library select buttons to reflect new selection
+  updateLibrarySelection(p.id);
+}
+
+function updateLibrarySelection(selectedId) {
+  ge('lib-list').querySelectorAll('.btn-select').forEach(btn => {
+    const isThis = btn.dataset.pid === selectedId;
+    btn.className = 'btn-select' + (isThis ? ' is-active' : '');
+    btn.textContent = isThis ? '✓ Geselecteerd' : 'Gebruik deze →';
+  });
+}
   ge('home-date').textContent = new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'});
   ge('provider-hint').textContent = 'Feedback via: Gemini Flash';
 
@@ -806,6 +1004,9 @@ function loadPrompt() {
       btnAll.style.display = 'none';
     }, { once: true });
   }
+
+  // Build library with same shuffle (for recommended badge awareness)
+  buildLibrary(shuffled);
 
 }
 
@@ -1057,6 +1258,8 @@ ge('sheet-bg').addEventListener('click', closeSheet);
 ge('btn-begrepen').addEventListener('click', closeSheet);
 // ── NAV ───────────────────────────────────────────────────
 ge('btn-start').addEventListener('click', goToCanvas);
+ge('btn-browse-all').addEventListener('click', () => showScreen('screen-library'));
+ge('btn-back-library').addEventListener('click', () => showScreen('screen-home'));
 ge('btn-back-canvas').addEventListener('click', () => showScreen('screen-home'));
 ge('btn-back-fb').addEventListener('click',     () => showScreen('screen-canvas'));
 ge('btn-submit').addEventListener('click', () => {
