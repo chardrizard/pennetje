@@ -14,31 +14,6 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
-// ---- API Key Gate ----
-function checkApiKey() {
-  const key = getApiKey();
-  if (!key) {
-    const apiScreen = document.getElementById('api-key-screen');
-    apiScreen.classList.remove('hidden');
-    apiScreen.classList.add('active');
-
-    document.getElementById('btn-save-key').addEventListener('click', () => {
-      const input = document.getElementById('api-key-input').value.trim();
-      if (input.startsWith('sk-ant-') || input.startsWith('sk-')) {
-        setApiKey(input);
-        apiScreen.classList.add('hidden');
-        apiScreen.classList.remove('active');
-        init();
-      } else {
-        document.getElementById('api-key-input').style.borderColor = 'var(--red-pen)';
-      }
-    }, { once: true });
-
-    return false;
-  }
-  return true;
-}
-
 // ---- Feedback Flow ----
 let lastUserText = '';
 
