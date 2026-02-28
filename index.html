@@ -997,12 +997,11 @@ function buildSys(p) {
 
 // ── API CALL (Gemini) ─────────────────────────────────────
 async function callLLM(text) {
-  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent';
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + GEMINI_MODEL + ':generateContent?key=' + GEMINI_KEY;
   var res = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type':   'application/json',
-      'x-goog-api-key': GEMINI_KEY
+      'Content-Type':   'application/json'
     },
     body: JSON.stringify({
       system_instruction: { parts:[{ text: buildSys(prompt) }] },
