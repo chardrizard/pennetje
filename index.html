@@ -987,7 +987,14 @@ async function callLLM(text) {
 }
 
 function parseJSON(raw) {
-  return JSON.parse(raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim());
+  var cleaned = raw.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch(e) {
+    // Attempt to rescue truncated JSON by closing open strings/brackets
+    console.warn('JSON parse failed, raw:', cleaned);
+    throw new Error('Feedback was onvolledig. Probeer het opnieuw.');
+  }
 }
 
 // ── FEEDBACK FLOW ─────────────────────────────────────────
