@@ -83,7 +83,7 @@ Regels:
 - "type" is altijd één van de vier genoemde waarden`;
 
   // ── Call Gemini API ────────────────────────────────────
-  const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+  const model = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
 
   try {
     const response = await fetch(
