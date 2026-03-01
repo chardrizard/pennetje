@@ -95,7 +95,7 @@ Regels:
           system_instruction: { parts: [{ text: systemPrompt }] },
           contents: [{ role: 'user', parts: [{ text }] }],
           generationConfig: {
-            maxOutputTokens: 2000,
+            maxOutputTokens: 4096, //was 2000
             temperature: 0.3,
           },
         }),
